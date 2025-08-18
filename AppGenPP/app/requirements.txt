@@ -1,0 +1,22 @@
+:f=ù# Dépendances principales pour KeyChain
+colorama
+requests
+pyotp
+pyperclip
+yaml
+pycryptodome
+passlib
+lz4
+zstandard
+brotli
+quopri
+blake3
+bcrypt
+argon2-cffi
+# Pour SQLite (si utilisé)
+# sqlite3 (inclus dans Python stdlib)
+# Pour compression optionnelle
+lzma
+bz2
+# Pour email et sécurité
+# (email, smtplib, getpass, etc. sont dans la stdlib)
