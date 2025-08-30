@@ -1,0 +1,124 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # === Python (pip / Poetry / requirements.txt) ===
+  - package-ecosystem: "pip"
+    directory: "/" # racine du projet
+    schedule:
+      interval: "weekly" # Hebdo : bon compromis entre sécurité et stabilité
+      day: "monday"
+      time: "04:00"
+      timezone: "Europe/Paris"
+    labels:
+      - "dependencies"
+      - "python"
+      - "security"
+    commit-message:
+      prefix: "deps(python)"
+      include: "scope"
+    reviewers:
+      - "othuram23"
+    assignees:
+      - "othuram23"
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 10
+    groups:
+      security-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # === GitHub Actions (CI/CD workflows) ===
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:30"
+      timezone: "Europe/Paris"
+    labels:
+      - "dependencies"
+      - "ci"
+      - "security"
+    commit-message:
+      prefix: "deps(actions)"
+      include: "scope"
+    reviewers:
+      - "othuram23"
+    assignees:
+      - "othuram23"
+    rebase-strategy: "auto"
+    groups:
+      actions-updates:
+        patterns:
+          - "*"
+
+  # === Docker (si tu utilises Dockerfile dans KeyChain) ===
+  - package-ecosystem: "docker"
+    directory: "/" # si Dockerfile est à la racine
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "05:00"
+      timezone: "Europe/Paris"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "security"
+    commit-message:
+      prefix: "deps(docker)"
+      include: "scope"
+    reviewers:
+      - "othuram23"
+    assignees:
+      - "othuram23"
+    rebase-strategy: "auto"
+    groups:
+      docker-updates:
+        patterns:
+          - "*"
+
+  # === Node.js / npm (si tu ajoutes une UI ou des scripts JS) ===
+  - package-ecosystem: "npm"
+    directory: "/" # change si tu mets le frontend dans un sous-dossier ex: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "05:30"
+      timezone: "Europe/Paris"
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "security"
+    commit-message:
+      prefix: "deps(js)"
+      include: "scope"
+    reviewers:
+      - "othuram23"
+    assignees:
+      - "othuram23"
+    rebase-strategy: "auto"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+
