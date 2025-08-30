@@ -1,0 +1,92 @@
+name: CI — KeyChain
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install deps (Python)
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Install Node (for JS tooling)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install JS deps if package.json
+      run: |
+        if [ -f package.json ]; then npm ci; fi
+
+    - name: Run linters (flake8 / eslint)
+      run: |
+        if command -v flake8 >/dev/null 2>&1; then flake8 || true; fi
+        if [ -f package.json ]; then npx eslint . || true; fi
+
+    - name: Run unit tests (pytest / npm test)
+      run: |
+        if command -v pytest >/dev/null 2>&1; then pytest -q; fi
+        if [ -f package.json ]; then npm test --silent || true; fi
+
+    - name: Run Semgrep SAST
+      uses: returntocorp/semgrep-action@v2
+      with:
+        config: 'p/ci'
+
+    - name: Dependency scan (npm audit / pip-audit)
+      run: |
+        if [ -f package.json ]; then npm audit --audit-level=moderate || true; fi
+        if command -v pip-audit >/dev/null 2>&1; then pip-audit || true; fi
+
+    - name: Upload test-results (optional)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: |
+          ./test-results || ./reports || ./coverage
+
+  codeql:
+    name: CodeQL Scan
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      security-events: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript,python
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
