@@ -1,3 +1,0 @@
-bcrypt
-requests
-pycryptodome
