@@ -1,0 +1,31 @@
+name: SBOM & Container Scan
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate SBOM (Syft)
+        uses: anchore/syft-action@v1
+        with:
+          output-format: cyclonedx
+          output-file: ./sbom.cyclonedx.json
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: ./sbom.cyclonedx.json
+  container-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image (if Dockerfile)
+        run: |
+          if [ -f Dockerfile ]; then docker build -t keychain-ci-image:latest . || true; fi
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@v0.9.0
+        with:
+          image-ref: keychain-ci-image:latest

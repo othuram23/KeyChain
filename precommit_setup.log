@@ -1,0 +1,38 @@
+[precommit-setup] START: Sat Aug 30 07:21:28 PM UTC 2025
+[info] Repo dir: /mnt/c/Users/Admin/KeyChain
+[info] Removing pre-commit cache (~/.cache/pre-commit) if exists...
+[info] Virtualenv already exists at /mnt/c/Users/Admin/KeyChain/.precommit-venv. Reusing it.
+[info] Python executable: /mnt/c/Users/Admin/KeyChain/.precommit-venv/bin/python
+Python 3.13.3
+pip 25.2 from /mnt/c/Users/Admin/KeyChain/.precommit-venv/lib/python3.13/site-packages/pip (python 3.13)
+[info] Upgrading pip, setuptools, wheel...
+Requirement already satisfied: pip in ./.precommit-venv/lib/python3.13/site-packages (25.2)
+Requirement already satisfied: setuptools in ./.precommit-venv/lib/python3.13/site-packages (80.9.0)
+Requirement already satisfied: wheel in ./.precommit-venv/lib/python3.13/site-packages (0.45.1)
+[info] Installing/upgrading pre-commit in venv...
+Requirement already satisfied: pre-commit in ./.precommit-venv/lib/python3.13/site-packages (4.3.0)
+Requirement already satisfied: cfgv>=2.0.0 in ./.precommit-venv/lib/python3.13/site-packages (from pre-commit) (3.4.0)
+Requirement already satisfied: identify>=1.0.0 in ./.precommit-venv/lib/python3.13/site-packages (from pre-commit) (2.6.13)
+Requirement already satisfied: nodeenv>=0.11.1 in ./.precommit-venv/lib/python3.13/site-packages (from pre-commit) (1.9.1)
+Requirement already satisfied: pyyaml>=5.1 in ./.precommit-venv/lib/python3.13/site-packages (from pre-commit) (6.0.2)
+Requirement already satisfied: virtualenv>=20.10.0 in ./.precommit-venv/lib/python3.13/site-packages (from pre-commit) (20.34.0)
+Requirement already satisfied: distlib<1,>=0.3.7 in ./.precommit-venv/lib/python3.13/site-packages (from virtualenv>=20.10.0->pre-commit) (0.4.0)
+Requirement already satisfied: filelock<4,>=3.12.2 in ./.precommit-venv/lib/python3.13/site-packages (from virtualenv>=20.10.0->pre-commit) (3.19.1)
+Requirement already satisfied: platformdirs<5,>=3.9.1 in ./.precommit-venv/lib/python3.13/site-packages (from virtualenv>=20.10.0->pre-commit) (4.4.0)
+[info] Applying Git network tuning (http.postBuffer, http.version, compression)...
+[info] Cleaning pre-commit and installing hooks...
+Cleaned /root/.cache/pre-commit.
+pre-commit installed at .git/hooks/pre-commit
+[info] Running pre-commit on all files (this can take some time). Logs -> /mnt/c/Users/Admin/KeyChain/precommit_verbose.txt
+[INFO] Initializing environment for https://github.com/pre-commit/pre-commit-hooks.
+[INFO] Initializing environment for https://github.com/psf/black.
+[INFO] Initializing environment for https://github.com/PyCQA/isort.
+An unexpected error has occurred: CalledProcessError: command: ('/usr/bin/git', 'checkout', '5.16.0')
+return code: 1
+stdout: (none)
+stderr:
+    error: pathspec '5.16.0' did not match any file(s) known to git
+Check the log at /root/.cache/pre-commit/pre-commit.log
+[warn] pre-commit returned non-zero (see /mnt/c/Users/Admin/KeyChain/precommit_verbose.txt)
+[precommit-setup] FINISHED: Sat Aug 30 07:25:09 PM UTC 2025
+[precommit-setup] Logs written to: /mnt/c/Users/Admin/KeyChain/precommit_setup.log and /mnt/c/Users/Admin/KeyChain/precommit_verbose.txt

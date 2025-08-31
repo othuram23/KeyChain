@@ -1,0 +1,58 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+      timezone: "Europe/Paris"
+    labels: ["dependencies", "python", "security"]
+    commit-message:
+      prefix: "deps(python)"
+      include: "scope"
+    reviewers: ["othuram23"]
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:30"
+      timezone: "Europe/Paris"
+    labels: ["dependencies", "ci", "security"]
+    commit-message:
+      prefix: "deps(actions)"
+      include: "scope"
+    reviewers: ["othuram23"]
+    rebase-strategy: "auto"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "05:00"
+      timezone: "Europe/Paris"
+    labels: ["dependencies", "docker", "security"]
+    commit-message:
+      prefix: "deps(docker)"
+      include: "scope"
+    reviewers: ["othuram23"]
+    rebase-strategy: "auto"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "05:30"
+      timezone: "Europe/Paris"
+    labels: ["dependencies", "javascript", "security"]
+    commit-message:
+      prefix: "deps(js)"
+      include: "scope"
+    reviewers: ["othuram23"]
+    rebase-strategy: "auto"

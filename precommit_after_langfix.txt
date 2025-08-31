@@ -1,0 +1,798 @@
+[INFO] Initializing environment for https://github.com/pre-commit/pre-commit-hooks.
+[INFO] Initializing environment for https://github.com/psf/black.
+[INFO] Initializing environment for https://github.com/PyCQA/isort.
+[WARNING] repo `https://github.com/PyCQA/isort` uses deprecated stage names (commit, merge-commit, push) which will be removed in a future version.  Hint: often `pre-commit autoupdate --repo https://github.com/PyCQA/isort` will fix this.  if it does not -- consider reporting an issue to that repo.
+[INFO] Initializing environment for https://github.com/pycqa/flake8.
+[INFO] Initializing environment for https://github.com/pycqa/flake8:flake8-bugbear.
+[INFO] Initializing environment for https://github.com/PyCQA/bandit.
+[INFO] Initializing environment for https://github.com/returntocorp/semgrep.
+[INFO] Initializing environment for https://github.com/Yelp/detect-secrets.
+[INFO] Installing environment for https://github.com/pre-commit/pre-commit-hooks.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/psf/black.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/PyCQA/isort.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/pycqa/flake8.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/PyCQA/bandit.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/returntocorp/semgrep.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/Yelp/detect-secrets.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+trim trailing whitespace.................................................Failed
+- hook id: trailing-whitespace
+- duration: 28.64s
+- exit code: 1
+
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+
+fix end of files.........................................................Failed
+- hook id: end-of-file-fixer
+- duration: 16.09s
+- exit code: 1
+
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+
+check yaml...............................................................Failed
+- hook id: check-yaml
+- duration: 15.75s
+- exit code: 1
+
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+
+check json...........................................(no files to check)Skipped
+- hook id: check-json
+check for added large files..............................................Failed
+- hook id: check-added-large-files
+- duration: 48.38s
+- exit code: 1
+
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+
+black....................................................................Failed
+- hook id: black
+- duration: 14.56s
+- files were modified by this hook
+
+reformatted AppGenPP\app\auth_manager.py
+reformatted AppGenPP\app\config_manager.py
+reformatted AppGenPP\app\master_password_manager.py
+reformatted AppGenPP\app\evaluation_password.py
+reformatted AppGenPP\app\main.py
+reformatted AppGenPP\app\session_manager.py
+reformatted AppGenPP\app\report_manager.py
+reformatted AppGenPP\app\password_generator.py
+reformatted AppGenPP\app\tests\test_keychain.py
+reformatted AppGenPP\app\storage_manager.py
+reformatted AppGenPP\app\encryption_manager.py
+
+All done! \u2728 \U0001f370 \u2728
+11 files reformatted.
+
+isort....................................................................Failed
+- hook id: isort
+- duration: 7.21s
+- files were modified by this hook
+
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\auth_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\config_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\encryption_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\evaluation_password.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\main.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\master_password_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\password_generator.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\report_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\session_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\storage_manager.py
+Fixing C:\Users\Admin\KeyChain\AppGenPP\app\tests\test_keychain.py
+
+flake8...................................................................Failed
+- hook id: flake8
+- duration: 10.02s
+- exit code: 1
+
+AppGenPP/app/auth_manager.py:1:1: F401 'base64' imported but unused
+AppGenPP/app/auth_manager.py:2:1: F401 'binascii' imported but unused
+AppGenPP/app/auth_manager.py:3:1: F401 'codecs' imported but unused
+AppGenPP/app/auth_manager.py:4:1: F401 'csv' imported but unused
+AppGenPP/app/auth_manager.py:5:1: F401 'datetime' imported but unused
+AppGenPP/app/auth_manager.py:6:1: F401 'gzip' imported but unused
+AppGenPP/app/auth_manager.py:7:1: F401 'hashlib' imported but unused
+AppGenPP/app/auth_manager.py:8:1: F401 'hmac' imported but unused
+AppGenPP/app/auth_manager.py:9:1: F401 'json' imported but unused
+AppGenPP/app/auth_manager.py:10:1: F401 'logging' imported but unused
+AppGenPP/app/auth_manager.py:12:1: F401 'random' imported but unused
+AppGenPP/app/auth_manager.py:13:1: F401 'smtplib' imported but unused
+AppGenPP/app/auth_manager.py:14:1: F401 'string' imported but unused
+AppGenPP/app/auth_manager.py:15:1: F401 'time' imported but unused
+AppGenPP/app/auth_manager.py:16:1: F401 'zlib' imported but unused
+AppGenPP/app/auth_manager.py:17:1: F401 'collections.Counter' imported but unused
+AppGenPP/app/auth_manager.py:17:1: F401 'collections.defaultdict' imported but unused
+AppGenPP/app/auth_manager.py:18:1: F401 'email.mime.text.MIMEText' imported but unused
+AppGenPP/app/auth_manager.py:19:1: F401 'getpass.getpass' imported but unused
+AppGenPP/app/auth_manager.py:21:1: F401 'requests' imported but unused
+AppGenPP/app/auth_manager.py:24:1: F401 'yaml' imported but unused
+AppGenPP/app/auth_manager.py:25:1: F401 'colorama.Fore' imported but unused
+AppGenPP/app/auth_manager.py:25:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/auth_manager.py:34:1: F401 'bz2' imported but unused
+AppGenPP/app/auth_manager.py:34:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:35:1: F401 'heapq' imported but unused
+AppGenPP/app/auth_manager.py:35:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:36:1: F401 'lzma' imported but unused
+AppGenPP/app/auth_manager.py:36:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:37:1: F401 'quopri' imported but unused
+AppGenPP/app/auth_manager.py:37:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:39:1: F401 'secrets' imported but unused
+AppGenPP/app/auth_manager.py:39:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:40:1: F401 'email.header.Header' imported but unused
+AppGenPP/app/auth_manager.py:40:1: F401 'email.header.decode_header' imported but unused
+AppGenPP/app/auth_manager.py:40:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:42:1: F401 'brotli' imported but unused
+AppGenPP/app/auth_manager.py:42:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:44:1: F401 'lz4.frame' imported but unused
+AppGenPP/app/auth_manager.py:44:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:45:1: F401 'numpy as np' imported but unused
+AppGenPP/app/auth_manager.py:45:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:46:1: F401 'zstandard as zstd' imported but unused
+AppGenPP/app/auth_manager.py:46:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:47:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:48:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:49:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:50:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:51:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:52:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:53:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:54:1: E402 module level import not at top of file
+AppGenPP/app/auth_manager.py:57:1: F811 redefinition of unused 'AuthManager' from line 47
+AppGenPP/app/auth_manager.py:84:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/auth_manager.py:85:80: E501 line too long (89 > 79 characters)
+AppGenPP/app/auth_manager.py:90:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/auth_manager.py:96:80: E501 line too long (98 > 79 characters)
+AppGenPP/app/auth_manager.py:100:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/config_manager.py:1:1: F401 'base64' imported but unused
+AppGenPP/app/config_manager.py:2:1: F401 'binascii' imported but unused
+AppGenPP/app/config_manager.py:3:1: F401 'codecs' imported but unused
+AppGenPP/app/config_manager.py:4:1: F401 'csv' imported but unused
+AppGenPP/app/config_manager.py:5:1: F401 'datetime' imported but unused
+AppGenPP/app/config_manager.py:6:1: F401 'gzip' imported but unused
+AppGenPP/app/config_manager.py:7:1: F401 'hashlib' imported but unused
+AppGenPP/app/config_manager.py:8:1: F401 'hmac' imported but unused
+AppGenPP/app/config_manager.py:12:1: F401 'random' imported but unused
+AppGenPP/app/config_manager.py:13:1: F401 'smtplib' imported but unused
+AppGenPP/app/config_manager.py:14:1: F401 'string' imported but unused
+AppGenPP/app/config_manager.py:15:1: F401 'time' imported but unused
+AppGenPP/app/config_manager.py:16:1: F401 'zlib' imported but unused
+AppGenPP/app/config_manager.py:17:1: F401 'collections.Counter' imported but unused
+AppGenPP/app/config_manager.py:17:1: F401 'collections.defaultdict' imported but unused
+AppGenPP/app/config_manager.py:18:1: F401 'email.mime.text.MIMEText' imported but unused
+AppGenPP/app/config_manager.py:19:1: F401 'getpass.getpass' imported but unused
+AppGenPP/app/config_manager.py:22:1: F401 'colorama.Fore' imported but unused
+AppGenPP/app/config_manager.py:22:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/config_manager.py:27:1: F401 'bz2' imported but unused
+AppGenPP/app/config_manager.py:27:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:28:1: F401 'heapq' imported but unused
+AppGenPP/app/config_manager.py:28:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:29:1: F401 'lzma' imported but unused
+AppGenPP/app/config_manager.py:29:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:30:1: F401 'quopri' imported but unused
+AppGenPP/app/config_manager.py:30:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:31:1: F401 'secrets' imported but unused
+AppGenPP/app/config_manager.py:31:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:32:1: F401 'email.header.Header' imported but unused
+AppGenPP/app/config_manager.py:32:1: F401 'email.header.decode_header' imported but unused
+AppGenPP/app/config_manager.py:32:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:34:1: F401 'brotli' imported but unused
+AppGenPP/app/config_manager.py:34:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:35:1: F401 'lz4.frame' imported but unused
+AppGenPP/app/config_manager.py:35:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:36:1: F401 'numpy as np' imported but unused
+AppGenPP/app/config_manager.py:36:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:37:1: F401 'snappy' imported but unused
+AppGenPP/app/config_manager.py:37:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:38:1: F401 'zstandard as zstd' imported but unused
+AppGenPP/app/config_manager.py:38:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:39:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:40:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:41:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:42:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:43:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:44:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:45:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:46:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:47:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:48:1: E402 module level import not at top of file
+AppGenPP/app/config_manager.py:63:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/config_manager.py:76:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/config_manager.py:84:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/config_manager.py:85:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/config_manager.py:90:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/config_manager.py:95:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/config_manager.py:103:80: E501 line too long (93 > 79 characters)
+AppGenPP/app/config_manager.py:109:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/config_manager.py:112:80: E501 line too long (106 > 79 characters)
+AppGenPP/app/config_manager.py:120:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/config_manager.py:126:80: E501 line too long (120 > 79 characters)
+AppGenPP/app/config_manager.py:129:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/config_manager.py:132:80: E501 line too long (130 > 79 characters)
+AppGenPP/app/config_manager.py:146:80: E501 line too long (89 > 79 characters)
+AppGenPP/app/config_manager.py:147:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/config_manager.py:150:80: E501 line too long (99 > 79 characters)
+AppGenPP/app/config_manager.py:157:80: E501 line too long (89 > 79 characters)
+AppGenPP/app/config_manager.py:166:80: E501 line too long (105 > 79 characters)
+AppGenPP/app/config_manager.py:172:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/config_manager.py:180:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/config_manager.py:190:80: E501 line too long (97 > 79 characters)
+AppGenPP/app/config_manager.py:197:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/config_manager.py:211:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/config_manager.py:214:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/encryption_manager.py:5:1: F401 'csv' imported but unused
+AppGenPP/app/encryption_manager.py:6:1: F401 'datetime' imported but unused
+AppGenPP/app/encryption_manager.py:9:1: F401 'heapq' imported but unused
+AppGenPP/app/encryption_manager.py:17:1: F401 'random' imported but unused
+AppGenPP/app/encryption_manager.py:18:1: F401 'secrets' imported but unused
+AppGenPP/app/encryption_manager.py:19:1: F401 'smtplib' imported but unused
+AppGenPP/app/encryption_manager.py:20:1: F401 'string' imported but unused
+AppGenPP/app/encryption_manager.py:23:1: F401 'time' imported but unused
+AppGenPP/app/encryption_manager.py:26:1: F401 'collections.defaultdict' imported but unused
+AppGenPP/app/encryption_manager.py:27:1: F401 'email.encoders.encode_base64' imported but unused
+AppGenPP/app/encryption_manager.py:33:1: F401 'requests' imported but unused
+AppGenPP/app/encryption_manager.py:36:1: F401 'colorama.Fore' imported but unused
+AppGenPP/app/encryption_manager.py:36:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/encryption_manager.py:49:1: F811 redefinition of unused 'base64' from line 1
+AppGenPP/app/encryption_manager.py:49:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:50:1: F811 redefinition of unused 'hashlib' from line 8
+AppGenPP/app/encryption_manager.py:50:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:51:1: F811 redefinition of unused 'hmac' from line 10
+AppGenPP/app/encryption_manager.py:51:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:52:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:54:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:56:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:57:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:58:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:59:1: F401 'Crypto.Random.get_random_bytes' imported but unused
+AppGenPP/app/encryption_manager.py:59:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:60:1: E402 module level import not at top of file
+AppGenPP/app/encryption_manager.py:183:80: E501 line too long (89 > 79 characters)
+AppGenPP/app/encryption_manager.py:205:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/encryption_manager.py:277:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/encryption_manager.py:281:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/encryption_manager.py:283:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/encryption_manager.py:317:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/encryption_manager.py:342:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/encryption_manager.py:363:12: E713 test for membership should be 'not in'
+AppGenPP/app/encryption_manager.py:390:29: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:413:80: E501 line too long (102 > 79 characters)
+AppGenPP/app/encryption_manager.py:424:9: F824 `nonlocal rawData` is unused: name is never assigned in scope
+AppGenPP/app/encryption_manager.py:428:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/encryption_manager.py:442:80: E501 line too long (130 > 79 characters)
+AppGenPP/app/encryption_manager.py:470:80: E501 line too long (102 > 79 characters)
+AppGenPP/app/encryption_manager.py:476:80: E501 line too long (89 > 79 characters)
+AppGenPP/app/encryption_manager.py:811:32: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:825:24: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:847:24: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:876:25: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:931:22: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:949:47: B006 Do not use mutable data structures for argument defaults.  They are created during function definition time. All calls to the function reuse this one instance of that data structure, persisting changes between them.
+AppGenPP/app/encryption_manager.py:963:47: B006 Do not use mutable data structures for argument defaults.  They are created during function definition time. All calls to the function reuse this one instance of that data structure, persisting changes between them.
+AppGenPP/app/encryption_manager.py:966:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/encryption_manager.py:1299:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/encryption_manager.py:1373:35: E203 whitespace before ':'
+AppGenPP/app/encryption_manager.py:1377:80: E501 line too long (90 > 79 characters)
+AppGenPP/app/encryption_manager.py:1378:1: F811 redefinition of unused 'EncryptionManager' from line 38
+AppGenPP/app/encryption_manager.py:1403:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/encryption_manager.py:1421:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/encryption_manager.py:1422:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/encryption_manager.py:1446:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/encryption_manager.py:1490:80: E501 line too long (99 > 79 characters)
+AppGenPP/app/encryption_manager.py:1539:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/encryption_manager.py:1582:80: E501 line too long (99 > 79 characters)
+AppGenPP/app/encryption_manager.py:1647:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/encryption_manager.py:1649:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/encryption_manager.py:1655:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/encryption_manager.py:1678:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/encryption_manager.py:1683:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/evaluation_password.py:10:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/evaluation_password.py:33:80: E501 line too long (92 > 79 characters)
+AppGenPP/app/evaluation_password.py:65:80: E501 line too long (100 > 79 characters)
+AppGenPP/app/evaluation_password.py:77:80: E501 line too long (120 > 79 characters)
+AppGenPP/app/evaluation_password.py:95:80: E501 line too long (114 > 79 characters)
+AppGenPP/app/evaluation_password.py:102:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/evaluation_password.py:145:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/evaluation_password.py:153:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/evaluation_password.py:156:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/evaluation_password.py:162:80: E501 line too long (96 > 79 characters)
+AppGenPP/app/evaluation_password.py:175:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/evaluation_password.py:180:80: E501 line too long (96 > 79 characters)
+AppGenPP/app/evaluation_password.py:199:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/evaluation_password.py:202:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/evaluation_password.py:215:80: E501 line too long (119 > 79 characters)
+AppGenPP/app/evaluation_password.py:222:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/evaluation_password.py:239:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/evaluation_password.py:249:80: E501 line too long (110 > 79 characters)
+AppGenPP/app/evaluation_password.py:260:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/evaluation_password.py:269:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/main.py:11:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/main.py:20:80: E501 line too long (98 > 79 characters)
+AppGenPP/app/main.py:37:1: F401 'time' imported but unused
+AppGenPP/app/main.py:41:1: F401 'getpass.getpass' imported but unused
+AppGenPP/app/main.py:42:1: F401 'typing.Self' imported but unused
+AppGenPP/app/main.py:44:1: F401 'pyotp' imported but unused
+AppGenPP/app/main.py:45:1: F401 'pyperclip' imported but unused
+AppGenPP/app/main.py:47:1: F401 'yaml' imported but unused
+AppGenPP/app/main.py:52:1: F811 redefinition of unused 'base64' from line 23
+AppGenPP/app/main.py:52:1: F401 'base64' imported but unused
+AppGenPP/app/main.py:52:1: E402 module level import not at top of file
+AppGenPP/app/main.py:53:1: F811 redefinition of unused 'binascii' from line 24
+AppGenPP/app/main.py:53:1: F401 'binascii' imported but unused
+AppGenPP/app/main.py:53:1: E402 module level import not at top of file
+AppGenPP/app/main.py:54:1: F401 'bz2' imported but unused
+AppGenPP/app/main.py:54:1: E402 module level import not at top of file
+AppGenPP/app/main.py:55:1: F811 redefinition of unused 'codecs' from line 25
+AppGenPP/app/main.py:55:1: F401 'codecs' imported but unused
+AppGenPP/app/main.py:55:1: E402 module level import not at top of file
+AppGenPP/app/main.py:56:1: F811 redefinition of unused 'csv' from line 26
+AppGenPP/app/main.py:56:1: F401 'csv' imported but unused
+AppGenPP/app/main.py:56:1: E402 module level import not at top of file
+AppGenPP/app/main.py:57:1: F811 redefinition of unused 'datetime' from line 27
+AppGenPP/app/main.py:57:1: F401 'datetime' imported but unused
+AppGenPP/app/main.py:57:1: E402 module level import not at top of file
+AppGenPP/app/main.py:58:1: F811 redefinition of unused 'gzip' from line 28
+AppGenPP/app/main.py:58:1: F401 'gzip' imported but unused
+AppGenPP/app/main.py:58:1: E402 module level import not at top of file
+AppGenPP/app/main.py:59:1: F811 redefinition of unused 'hashlib' from line 29
+AppGenPP/app/main.py:59:1: F401 'hashlib' imported but unused
+AppGenPP/app/main.py:59:1: E402 module level import not at top of file
+AppGenPP/app/main.py:60:1: F401 'heapq' imported but unused
+AppGenPP/app/main.py:60:1: E402 module level import not at top of file
+AppGenPP/app/main.py:61:1: F811 redefinition of unused 'hmac' from line 30
+AppGenPP/app/main.py:61:1: F401 'hmac' imported but unused
+AppGenPP/app/main.py:61:1: E402 module level import not at top of file
+AppGenPP/app/main.py:62:1: F811 redefinition of unused 'json' from line 31
+AppGenPP/app/main.py:62:1: E402 module level import not at top of file
+AppGenPP/app/main.py:63:1: F811 redefinition of unused 'logging' from line 32
+AppGenPP/app/main.py:63:1: E402 module level import not at top of file
+AppGenPP/app/main.py:64:1: F401 'lzma' imported but unused
+AppGenPP/app/main.py:64:1: E402 module level import not at top of file
+AppGenPP/app/main.py:65:1: F811 redefinition of unused 'os' from line 33
+AppGenPP/app/main.py:65:1: E402 module level import not at top of file
+AppGenPP/app/main.py:66:1: F401 'pickle' imported but unused
+AppGenPP/app/main.py:66:1: E402 module level import not at top of file
+AppGenPP/app/main.py:67:1: F401 'quopri' imported but unused
+AppGenPP/app/main.py:67:1: E402 module level import not at top of file
+AppGenPP/app/main.py:68:1: F811 redefinition of unused 'random' from line 34
+AppGenPP/app/main.py:68:1: F401 'random' imported but unused
+AppGenPP/app/main.py:68:1: E402 module level import not at top of file
+AppGenPP/app/main.py:69:1: F401 'secrets' imported but unused
+AppGenPP/app/main.py:69:1: E402 module level import not at top of file
+AppGenPP/app/main.py:70:1: F811 redefinition of unused 'smtplib' from line 35
+AppGenPP/app/main.py:70:1: F401 'smtplib' imported but unused
+AppGenPP/app/main.py:70:1: E402 module level import not at top of file
+AppGenPP/app/main.py:71:1: F811 redefinition of unused 'string' from line 36
+AppGenPP/app/main.py:71:1: F401 'string' imported but unused
+AppGenPP/app/main.py:71:1: E402 module level import not at top of file
+AppGenPP/app/main.py:72:1: F401 'urllib.parse' imported but unused
+AppGenPP/app/main.py:72:1: E402 module level import not at top of file
+AppGenPP/app/main.py:73:1: F811 redefinition of unused 'zlib' from line 38
+AppGenPP/app/main.py:73:1: F401 'zlib' imported but unused
+AppGenPP/app/main.py:73:1: E402 module level import not at top of file
+AppGenPP/app/main.py:74:1: F811 redefinition of unused 'Counter' from line 39
+AppGenPP/app/main.py:74:1: F811 redefinition of unused 'defaultdict' from line 39
+AppGenPP/app/main.py:74:1: F401 'collections.Counter' imported but unused
+AppGenPP/app/main.py:74:1: E402 module level import not at top of file
+AppGenPP/app/main.py:75:1: F401 'email.header.Header' imported but unused
+AppGenPP/app/main.py:75:1: F401 'email.header.decode_header' imported but unused
+AppGenPP/app/main.py:75:1: E402 module level import not at top of file
+AppGenPP/app/main.py:76:1: F811 redefinition of unused 'MIMEText' from line 40
+AppGenPP/app/main.py:76:1: F401 'email.mime.text.MIMEText' imported but unused
+AppGenPP/app/main.py:76:1: E402 module level import not at top of file
+AppGenPP/app/main.py:78:1: F401 'bcrypt' imported but unused
+AppGenPP/app/main.py:78:1: E402 module level import not at top of file
+AppGenPP/app/main.py:79:1: F401 'brotli' imported but unused
+AppGenPP/app/main.py:79:1: E402 module level import not at top of file
+AppGenPP/app/main.py:80:1: F401 'lz4.frame' imported but unused
+AppGenPP/app/main.py:80:1: E402 module level import not at top of file
+AppGenPP/app/main.py:81:1: F401 'numpy as np' imported but unused
+AppGenPP/app/main.py:81:1: E402 module level import not at top of file
+AppGenPP/app/main.py:82:1: F811 redefinition of unused 'requests' from line 46
+AppGenPP/app/main.py:82:1: F401 'requests' imported but unused
+AppGenPP/app/main.py:82:1: E402 module level import not at top of file
+AppGenPP/app/main.py:83:1: F401 'snappy' imported but unused
+AppGenPP/app/main.py:83:1: E402 module level import not at top of file
+AppGenPP/app/main.py:84:1: F401 'zstandard as zstd' imported but unused
+AppGenPP/app/main.py:84:1: E402 module level import not at top of file
+AppGenPP/app/main.py:85:1: E402 module level import not at top of file
+AppGenPP/app/main.py:86:1: E402 module level import not at top of file
+AppGenPP/app/main.py:87:1: F401 'Crypto.Cipher.AES' imported but unused
+AppGenPP/app/main.py:87:1: E402 module level import not at top of file
+AppGenPP/app/main.py:88:1: F401 'Crypto.Hash.HMAC' imported but unused
+AppGenPP/app/main.py:88:1: F401 'Crypto.Hash.SHA256' imported but unused
+AppGenPP/app/main.py:88:1: E402 module level import not at top of file
+AppGenPP/app/main.py:89:1: F401 'Crypto.Protocol.KDF.PBKDF2' imported but unused
+AppGenPP/app/main.py:89:1: E402 module level import not at top of file
+AppGenPP/app/main.py:90:1: F401 'Crypto.Random.get_random_bytes' imported but unused
+AppGenPP/app/main.py:90:1: E402 module level import not at top of file
+AppGenPP/app/main.py:91:1: F401 'Crypto.Util.Padding.pad' imported but unused
+AppGenPP/app/main.py:91:1: F401 'Crypto.Util.Padding.unpad' imported but unused
+AppGenPP/app/main.py:91:1: E402 module level import not at top of file
+AppGenPP/app/main.py:92:1: E402 module level import not at top of file
+AppGenPP/app/main.py:93:1: E402 module level import not at top of file
+AppGenPP/app/main.py:94:1: E402 module level import not at top of file
+AppGenPP/app/main.py:95:1: E402 module level import not at top of file
+AppGenPP/app/main.py:96:1: E402 module level import not at top of file
+AppGenPP/app/main.py:97:1: E402 module level import not at top of file
+AppGenPP/app/main.py:98:1: E402 module level import not at top of file
+AppGenPP/app/main.py:99:1: E402 module level import not at top of file
+AppGenPP/app/main.py:128:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/main.py:151:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/main.py:156:80: E501 line too long (121 > 79 characters)
+AppGenPP/app/main.py:193:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/main.py:231:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/main.py:243:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/main.py:276:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/main.py:333:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/master_password_manager.py:1:1: F401 'base64' imported but unused
+AppGenPP/app/master_password_manager.py:3:1: F401 'hashlib' imported but unused
+AppGenPP/app/master_password_manager.py:16:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/master_password_manager.py:38:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/master_password_manager.py:50:13: B007 Loop control variable 'attempt' not used within the loop body. If this is intended, start the name with an underscore.
+AppGenPP/app/master_password_manager.py:62:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/master_password_manager.py:68:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/master_password_manager.py:72:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/password_generator.py:11:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:13:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:14:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:15:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:16:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:17:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:18:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:19:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:20:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:21:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:22:1: E402 module level import not at top of file
+AppGenPP/app/password_generator.py:26:1: F811 redefinition of unused 'PasswordGenerator' from line 19
+AppGenPP/app/password_generator.py:45:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/password_generator.py:54:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/password_generator.py:73:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/password_generator.py:75:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/password_generator.py:78:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/password_generator.py:99:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/password_generator.py:103:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/password_generator.py:107:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/password_generator.py:111:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/password_generator.py:116:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/password_generator.py:142:80: E501 line too long (92 > 79 characters)
+AppGenPP/app/password_generator.py:165:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/password_generator.py:176:80: E501 line too long (96 > 79 characters)
+AppGenPP/app/password_generator.py:180:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/password_generator.py:187:80: E501 line too long (99 > 79 characters)
+AppGenPP/app/password_generator.py:195:80: E501 line too long (99 > 79 characters)
+AppGenPP/app/password_generator.py:203:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/password_generator.py:211:80: E501 line too long (100 > 79 characters)
+AppGenPP/app/password_generator.py:219:80: E501 line too long (94 > 79 characters)
+AppGenPP/app/password_generator.py:235:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/password_generator.py:239:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/password_generator.py:243:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/password_generator.py:246:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/password_generator.py:267:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/password_generator.py:278:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/password_generator.py:280:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/password_generator.py:290:80: E501 line too long (91 > 79 characters)
+AppGenPP/app/password_generator.py:298:80: E501 line too long (97 > 79 characters)
+AppGenPP/app/password_generator.py:299:80: E501 line too long (97 > 79 characters)
+AppGenPP/app/password_generator.py:309:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/password_generator.py:313:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/password_generator.py:316:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/password_generator.py:317:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/report_manager.py:2:1: F401 'binascii' imported but unused
+AppGenPP/app/report_manager.py:3:1: F401 'codecs' imported but unused
+AppGenPP/app/report_manager.py:4:1: F401 'csv' imported but unused
+AppGenPP/app/report_manager.py:5:1: F401 'datetime' imported but unused
+AppGenPP/app/report_manager.py:6:1: F401 'gzip' imported but unused
+AppGenPP/app/report_manager.py:7:1: F401 'hashlib' imported but unused
+AppGenPP/app/report_manager.py:8:1: F401 'hmac' imported but unused
+AppGenPP/app/report_manager.py:12:1: F401 'random' imported but unused
+AppGenPP/app/report_manager.py:13:1: F401 'smtplib' imported but unused
+AppGenPP/app/report_manager.py:14:1: F401 'string' imported but unused
+AppGenPP/app/report_manager.py:15:1: F401 'time' imported but unused
+AppGenPP/app/report_manager.py:16:1: F401 'zlib' imported but unused
+AppGenPP/app/report_manager.py:18:1: F401 'requests' imported but unused
+AppGenPP/app/report_manager.py:19:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/report_manager.py:23:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:24:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:25:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:26:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:27:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:28:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:29:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:30:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:31:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:32:1: E402 module level import not at top of file
+AppGenPP/app/report_manager.py:36:1: F811 redefinition of unused 'ReportManager' from line 30
+AppGenPP/app/report_manager.py:60:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/report_manager.py:67:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/report_manager.py:93:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/report_manager.py:104:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/report_manager.py:117:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/report_manager.py:148:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/report_manager.py:171:80: E501 line too long (156 > 79 characters)
+AppGenPP/app/session_manager.py:1:1: F401 'base64' imported but unused
+AppGenPP/app/session_manager.py:2:1: F401 'binascii' imported but unused
+AppGenPP/app/session_manager.py:3:1: F401 'codecs' imported but unused
+AppGenPP/app/session_manager.py:4:1: F401 'csv' imported but unused
+AppGenPP/app/session_manager.py:5:1: F401 'datetime' imported but unused
+AppGenPP/app/session_manager.py:6:1: F401 'gzip' imported but unused
+AppGenPP/app/session_manager.py:7:1: F401 'hashlib' imported but unused
+AppGenPP/app/session_manager.py:8:1: F401 'hmac' imported but unused
+AppGenPP/app/session_manager.py:9:1: F401 'json' imported but unused
+AppGenPP/app/session_manager.py:12:1: F401 'random' imported but unused
+AppGenPP/app/session_manager.py:14:1: F401 'string' imported but unused
+AppGenPP/app/session_manager.py:15:1: F401 'time' imported but unused
+AppGenPP/app/session_manager.py:16:1: F401 'zlib' imported but unused
+AppGenPP/app/session_manager.py:17:1: F401 'collections.Counter' imported but unused
+AppGenPP/app/session_manager.py:17:1: F401 'collections.defaultdict' imported but unused
+AppGenPP/app/session_manager.py:19:1: F401 'getpass.getpass' imported but unused
+AppGenPP/app/session_manager.py:21:1: F401 'requests' imported but unused
+AppGenPP/app/session_manager.py:24:1: F401 'yaml' imported but unused
+AppGenPP/app/session_manager.py:25:1: F401 'colorama.Fore' imported but unused
+AppGenPP/app/session_manager.py:25:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/session_manager.py:34:1: F401 'bz2' imported but unused
+AppGenPP/app/session_manager.py:34:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:35:1: F401 'heapq' imported but unused
+AppGenPP/app/session_manager.py:35:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:36:1: F401 'lzma' imported but unused
+AppGenPP/app/session_manager.py:36:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:37:1: F401 'quopri' imported but unused
+AppGenPP/app/session_manager.py:37:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:39:1: F401 'secrets' imported but unused
+AppGenPP/app/session_manager.py:39:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:40:1: F401 'email.header.Header' imported but unused
+AppGenPP/app/session_manager.py:40:1: F401 'email.header.decode_header' imported but unused
+AppGenPP/app/session_manager.py:40:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:42:1: F401 'brotli' imported but unused
+AppGenPP/app/session_manager.py:42:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:44:1: F401 'lz4.frame' imported but unused
+AppGenPP/app/session_manager.py:44:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:45:1: F401 'numpy as np' imported but unused
+AppGenPP/app/session_manager.py:45:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:46:1: F401 'zstandard as zstd' imported but unused
+AppGenPP/app/session_manager.py:46:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:47:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:48:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:49:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:50:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:51:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:52:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:53:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:54:1: E402 module level import not at top of file
+AppGenPP/app/session_manager.py:74:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/session_manager.py:98:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/storage_manager.py:8:1: F401 'email.mime.text.MIMEText' imported but unused
+AppGenPP/app/storage_manager.py:9:1: F401 'getpass.getpass' imported but unused
+AppGenPP/app/storage_manager.py:10:1: F401 'typing.Tuple' imported but unused
+AppGenPP/app/storage_manager.py:12:1: F401 'pyotp' imported but unused
+AppGenPP/app/storage_manager.py:13:1: F401 'pyperclip' imported but unused
+AppGenPP/app/storage_manager.py:15:1: F401 'colorama.Style' imported but unused
+AppGenPP/app/storage_manager.py:19:1: F401 'bz2' imported but unused
+AppGenPP/app/storage_manager.py:19:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:20:1: F401 'heapq' imported but unused
+AppGenPP/app/storage_manager.py:20:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:21:1: F401 'lzma' imported but unused
+AppGenPP/app/storage_manager.py:21:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:22:1: F401 'quopri' imported but unused
+AppGenPP/app/storage_manager.py:22:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:23:1: F401 'secrets' imported but unused
+AppGenPP/app/storage_manager.py:23:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:24:1: F401 'email.header.Header' imported but unused
+AppGenPP/app/storage_manager.py:24:1: F401 'email.header.decode_header' imported but unused
+AppGenPP/app/storage_manager.py:24:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:26:1: F401 'brotli' imported but unused
+AppGenPP/app/storage_manager.py:26:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:27:1: F401 'lz4.frame' imported but unused
+AppGenPP/app/storage_manager.py:27:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:28:1: F401 'numpy as np' imported but unused
+AppGenPP/app/storage_manager.py:28:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:29:1: F401 'snappy' imported but unused
+AppGenPP/app/storage_manager.py:29:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:30:1: F401 'zstandard as zstd' imported but unused
+AppGenPP/app/storage_manager.py:30:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:31:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:32:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:33:1: F401 'Crypto.Cipher.AES' imported but unused
+AppGenPP/app/storage_manager.py:33:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:34:1: F401 'Crypto.Hash.SHA256' imported but unused
+AppGenPP/app/storage_manager.py:34:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:35:1: F401 'Crypto.Protocol.KDF.PBKDF2' imported but unused
+AppGenPP/app/storage_manager.py:35:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:36:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:37:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:38:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:39:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:40:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:41:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:42:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:43:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:44:1: E402 module level import not at top of file
+AppGenPP/app/storage_manager.py:48:1: F811 redefinition of unused 'StorageManager' from line 44
+AppGenPP/app/storage_manager.py:49:80: E501 line too long (93 > 79 characters)
+AppGenPP/app/storage_manager.py:77:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/storage_manager.py:84:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/storage_manager.py:139:80: E501 line too long (96 > 79 characters)
+AppGenPP/app/storage_manager.py:150:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/storage_manager.py:160:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:170:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/storage_manager.py:176:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:178:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/storage_manager.py:179:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:182:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:184:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/storage_manager.py:193:80: E501 line too long (91 > 79 characters)
+AppGenPP/app/storage_manager.py:220:80: E501 line too long (96 > 79 characters)
+AppGenPP/app/storage_manager.py:240:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/storage_manager.py:244:80: E501 line too long (101 > 79 characters)
+AppGenPP/app/storage_manager.py:256:13: F841 local variable 'key' is assigned to but never used
+AppGenPP/app/storage_manager.py:256:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:271:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/storage_manager.py:275:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:292:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/storage_manager.py:294:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:296:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/storage_manager.py:306:80: E501 line too long (98 > 79 characters)
+AppGenPP/app/storage_manager.py:314:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:323:80: E501 line too long (104 > 79 characters)
+AppGenPP/app/storage_manager.py:346:80: E501 line too long (122 > 79 characters)
+AppGenPP/app/storage_manager.py:362:80: E501 line too long (97 > 79 characters)
+AppGenPP/app/storage_manager.py:371:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/storage_manager.py:373:80: E501 line too long (114 > 79 characters)
+AppGenPP/app/storage_manager.py:400:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/storage_manager.py:437:80: E501 line too long (90 > 79 characters)
+AppGenPP/app/storage_manager.py:512:80: E501 line too long (131 > 79 characters)
+AppGenPP/app/storage_manager.py:523:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:538:39: F821 undefined name 'base64'
+AppGenPP/app/storage_manager.py:539:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/storage_manager.py:579:80: E501 line too long (107 > 79 characters)
+AppGenPP/app/storage_manager.py:591:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/storage_manager.py:596:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/storage_manager.py:599:80: E501 line too long (90 > 79 characters)
+AppGenPP/app/storage_manager.py:603:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/storage_manager.py:623:80: E501 line too long (110 > 79 characters)
+AppGenPP/app/storage_manager.py:636:80: E501 line too long (96 > 79 characters)
+AppGenPP/app/storage_manager.py:656:34: F821 undefined name 'base64'
+AppGenPP/app/storage_manager.py:657:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:666:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/storage_manager.py:681:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/storage_manager.py:704:26: F821 undefined name 'csv'
+AppGenPP/app/storage_manager.py:704:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:722:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/storage_manager.py:731:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/storage_manager.py:732:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:736:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/storage_manager.py:744:26: F821 undefined name 'csv'
+AppGenPP/app/storage_manager.py:746:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/storage_manager.py:760:28: F821 undefined name 'base64'
+AppGenPP/app/storage_manager.py:763:25: F821 undefined name 'auth'
+AppGenPP/app/storage_manager.py:775:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:776:80: E501 line too long (82 > 79 characters)
+AppGenPP/app/storage_manager.py:779:80: E501 line too long (84 > 79 characters)
+AppGenPP/app/storage_manager.py:867:80: E501 line too long (86 > 79 characters)
+AppGenPP/app/storage_manager.py:878:80: E501 line too long (90 > 79 characters)
+AppGenPP/app/storage_manager.py:914:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:921:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:935:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/storage_manager.py:937:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/storage_manager.py:956:80: E501 line too long (87 > 79 characters)
+AppGenPP/app/storage_manager.py:977:37: W291 trailing whitespace
+AppGenPP/app/tests/test_keychain.py:10:80: E501 line too long (93 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:14:1: E303 too many blank lines (3)
+AppGenPP/app/tests/test_keychain.py:20:80: E501 line too long (88 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:26:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:54:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:66:80: E501 line too long (120 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:68:80: E501 line too long (81 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:71:80: E501 line too long (80 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:74:80: E501 line too long (85 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:82:80: E501 line too long (83 > 79 characters)
+AppGenPP/app/tests/test_keychain.py:91:80: E501 line too long (80 > 79 characters)
+
+bandit...................................................................Failed
+- hook id: bandit
+- duration: 125.04s
+- exit code: 1
+
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[main]	INFO	running on Python 3.13.7
+Working... ---------------------------------------- 100% 0:01:40
+Traceback (most recent call last):
+  File "C:\Users\Admin\.cache\pre-commit\repouhqrn65i\py_env-python3\Lib\site-packages\bandit\core\manager.py", line 186, in output_results
+    report_func(
+    ~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<3 lines>...
+        lines=lines,
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Admin\.cache\pre-commit\repouhqrn65i\py_env-python3\Lib\site-packages\bandit\formatters\text.py", line 195, in report
+    wrapped_file.write(result)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u03b1' in position 695968: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Admin\.cache\pre-commit\repouhqrn65i\py_env-python3\Scripts\bandit.EXE\__main__.py", line 6, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\Admin\.cache\pre-commit\repouhqrn65i\py_env-python3\Lib\site-packages\bandit\cli\main.py", line 671, in main
+    b_mgr.output_results(
+    ~~~~~~~~~~~~~~~~~~~~^
+        args.context_lines,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        args.msg_template,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Admin\.cache\pre-commit\repouhqrn65i\py_env-python3\Lib\site-packages\bandit\core\manager.py", line 195, in output_results
+    raise RuntimeError(
+    ...<2 lines>...
+    )
+RuntimeError: Unable to output report using 'txt' formatter: 'charmap' codec can't encode character '\u03b1' in position 695968: character maps to <undefined>
+
+semgrep..................................................................Failed
+- hook id: semgrep
+- duration: 0.03s
+- exit code: 1
+
+Executable `C:UsersAdmin.cachepre-commitrepos2b9n9pcpy_env-python3.13Scriptspython.EXE` not found
+
+Detect secrets...........................................................Failed
+- hook id: detect-secrets
+- duration: 11.31s
+- exit code: 1
+
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+[WinError 5] Accès refusé
+ERROR: Potential secrets about to be committed to git repo!
+
+Secret Type: Base64 High Entropy String
+Location:    AppGenPP/app/encryption_manager.py:558
+
+Secret Type: Base64 High Entropy String
+Location:    AppGenPP/app/encryption_manager.py:823
+
+Possible mitigations:
+  - For information about putting your secrets in a safer place, please ask in
+    #security
+  - Mark false positives with an inline `pragma: allowlist secret` comment
+
+If a secret has already been committed, visit
+https://help.github.com/articles/removing-sensitive-data-from-a-repository
+

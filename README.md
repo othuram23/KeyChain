@@ -1,114 +1,56 @@
-# Keychain – Gestionnaire de mots de passe sécurisé
+# KeyChain
 
----
+KeyChain — gestionnaire sécurisé de mots de passe et boîte à outils pour évaluer/générer/stocker des secrets localement.
 
-## Description
+## But
 
-**Keychain** est un gestionnaire de mots de passe complet et sécurisé écrit en Python. Il propose des fonctionnalités avancées pour générer, évaluer, chiffrer, stocker et gérer vos mots de passe, tout en assurant la confidentialité et la sécurité de vos données.
+Fournir un coffre-fort local chiffré, des utilitaires de génération et d'évaluation de mots de passe, et des composants faciles à auditer et à intégrer.
 
----
+## Où commencer
 
-## Fonctionnalités principales
+- Documentation complète : dossier `docs/`.
+- Script d'initialisation : `scripts/setup_repo.sh` (si présent).
 
-- **Génération de mots de passe**  
-  Créez des mots de passe robustes selon des critères personnalisés (longueur, majuscules, chiffres, caractères spéciaux, etc.).
+## Quickstart (dev)
 
-- **Évaluation de la force des mots de passe**  
-  Analysez la complexité de vos mots de passe et obtenez des recommandations pour les renforcer.
+1. Créez un environnement Python (recommandé) :
 
-- **Vérification des mots de passe compromis**  
-  Utilise l’API Have I Been Pwned pour vérifier si un mot de passe a été exposé lors de fuites de données.
+   python -m venv .venv
+   .\.venv\Scripts\activate
 
-- **Chiffrement AES-GCM**  
-  Les mots de passe sont chiffrés avant d’être sauvegardés, garantissant leur sécurité même en cas d’accès non autorisé aux fichiers.
+2. Installez les dépendances (si `AppGenPP/app/requirements.txt` existe) :
 
-- **Gestion du mot de passe maître**  
-  Protégez l’accès à l’application avec un mot de passe maître fort, stocké de façon sécurisée (bcrypt, argon2, pbkdf2).
+   pip install -r AppGenPP/app/requirements.txt
 
-- **Historique et gestion des mots de passe**  
-  Consultez l’historique des mots de passe générés, modifiez ou supprimez-les facilement.
+3. Installez les hooks `pre-commit` et lancez un premier lint/test :
 
-- **Exportation et importation sécurisées**  
-  Exportez ou importez vos mots de passe dans des fichiers chiffrés.
+   pip install pre-commit
+   pre-commit install
+   pre-commit run --all-files
 
-- **Encodage et décodage avancés**  
-  Encodez ou décodez des chaînes dans de nombreux formats (base64, hex, base32, base58, base91, rot13, gzip, lzma, etc.).
+4. Lancer les tests unitaires (si pytest est installé) :
 
-- **Gestion des clés de chiffrement**  
-  Générez, stockez et gérez les clés utilisées pour le chiffrement de vos données.
+   pytest -q
 
-- **Suppression d’urgence**  
-  Supprimez rapidement tous les mots de passe et données sensibles en cas de besoin.
+5. Exécuter l'application (prototype) :
 
-- **Journalisation complète**  
-  Toutes les actions importantes sont enregistrées dans un fichier de log (`password_manager.log`).
+   python AppGenPP/app/main.py
 
----
+## CI / sécurité
 
-## Installation
+Le dépôt contient des modèles (à compléter) pour :
 
-1. **Cloner le dépôt :**
-   ```bash
-   git clone https://github.com/votre-utilisateur/keychain.git
-   cd keychain
-   ```
+- GitHub Actions (`.github/workflows/`) : lint → tests → SAST
+- Pré-commit hooks (`.pre-commit-config.yaml`) pour formatter et détecter secrets
 
-2. **Installer les dépendances :**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Contribuer
 
----
-
-## Utilisation
-
-Lancez le programme principal :
-
-```bash
-python KeyChain.py
-```
-
-Suivez les instructions du menu interactif pour accéder à toutes les fonctionnalités.
-
----
-
-## Dépendances principales
-
-- `bcrypt`, `argon2-cffi`, `passlib` : Hachage sécurisé des mots de passe
-- `pycryptodome` : Chiffrement AES-GCM
-- `requests` : Requêtes HTTP (API Have I Been Pwned)
-- `qrcode[pil]` : Génération de QR codes (si activé)
-- `snappy`, `lz4`, `zstandard`, `brotli`, `lzma`, `bz2` : Algorithmes de compression avancés (optionnels)
-- `colorama` : Affichage coloré en console
-
----
-
-## Sécurité
-
-- **Chiffrement fort** : AES-GCM avec dérivation de clé PBKDF2/Argon2.
-- **Stockage sécurisé** : Permissions restrictives sur les fichiers sensibles.
-- **Mot de passe maître** : Obligatoire, longueur minimale configurable.
-- **Masquage des mots de passe** : Affichage masqué lors de la saisie.
-- **Vérification en ligne** : Contrôle de la compromission des mots de passe.
-
----
-
-## Journalisation
-
-Un fichier `password_manager.log` est généré pour tracer toutes les actions importantes (création, modification, suppression, export, etc.).
-
----
-
-## Contribution
-
-Les contributions sont les bienvenues !  
-Pour proposer une fonctionnalité ou corriger un bug, ouvrez une issue ou une pull request.
-
----
+Voir `CONTRIBUTING.md` pour le guide de contribution, la checklist PR et les règles d'écriture de code.
 
 ## Licence
 
-Ce projet est sous licence MIT.  
-Consultez le fichier `LICENSE` pour plus d’informations.
+Voir le fichier `LICENSE` à la racine du projet.
 
----
+## Contacts
+
+Pour les questions générales : ouvre une issue sur GitHub. Pour les rapports de sécurité, consulte `SECURITY.md`.

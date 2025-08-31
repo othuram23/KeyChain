@@ -1,26 +1,28 @@
-from auth_manager import AuthManager
-from encryption_manager import EncryptionManager
-from storage_manager import StorageManager
+import base64
+import hashlib
+import json
+import logging
+import os
+import string
 
+import requests
+from auth_manager import AuthManager
+from colorama import Fore, Style, init
+from config_manager import ConfigManager
+from encryption_manager import EncryptionManager
+from master_password_manager import MasterPasswordManager
 from password_generator import PasswordGenerator
 from report_manager import ReportManager
 from session_manager import SessionManager
-from config_manager import ConfigManager
-from master_password_manager import MasterPasswordManager
-import os
-import json
-import base64
-import string
-import hashlib
-import logging
-import requests
-    # Pour export YAML
+from storage_manager import StorageManager
 
-from colorama import init, Fore, Style
+# Pour export YAML
+
+
 init(autoreset=True)
 
 
-class EvaluationPassword():
+class EvaluationPassword:
 
     def __init__(self):
         self.conf = ConfigManager()
@@ -57,7 +59,9 @@ class EvaluationPassword():
         return score
 
     @staticmethod
-    def check_password(password: str, common_passwords_path: str = "common.txt") -> None:
+    def check_password(
+        password: str, common_passwords_path: str = "common.txt"
+    ) -> None:
         """Vérifie le mot de passe pour divers problèmes et affiche un message sur sa robustesse."""
         common_passwords: set[str] = set()
         if os.path.exists(common_passwords_path):
@@ -69,27 +73,30 @@ class EvaluationPassword():
         if password in common_passwords:
             print("Le mot de passe est trop commun. Sa robustesse est 0.")
             return
-        print(f"Force du mot de passe : {EvaluationPassword.evaluate_password_strength(password, list(common_passwords))}")
+        print(
+            f"Force du mot de passe : {EvaluationPassword.evaluate_password_strength(password, list(common_passwords))}"
+        )
         for rec in EvaluationPassword.quality_recommendations(password):
             print(f"- {rec}")
-
-
-
-
 
     def evaluate_password_menu(self):
         password = input("\nEntrez le mot de passe à évaluer: ").strip()
-        common_patterns_path = os.path.join(self.storage.secure_directory, "common_patterns.txt")
+        common_patterns_path = os.path.join(
+            self.storage.secure_directory, "common_patterns.txt"
+        )
         common_patterns = []
         if os.path.exists(common_patterns_path):
             try:
-                with open(common_patterns_path, 'r', encoding='utf-8') as f:
+                with open(common_patterns_path, "r", encoding="utf-8") as f:
                     common_patterns = f.read().splitlines()
             except Exception:
                 pass
-        print(f"\nForce du mot de passe: {EvaluationPassword.evaluate_password_strength(password, common_patterns)}")
+        print(
+            f"\nForce du mot de passe: {EvaluationPassword.evaluate_password_strength(password, common_patterns)}"
+        )
         for rec in EvaluationPassword.quality_recommendations(password):
             print(f"- {rec}")
+
     @staticmethod
     def evaluate_password_strength(password: str, common_patterns) -> str:
         """Évalue la force du mot de passe et retourne une chaîne descriptive."""
@@ -99,10 +106,19 @@ class EvaluationPassword():
             return "Trop commun"
         score = EvaluationPassword.check_password_strength(password)
         # Optimisation : mapping score -> label
-        labels = ["Très faible", "Très faible", "Faible", "Moyen", "Correct", "Fort", "Excellent", "Excellent", "Excellent"]
+        labels = [
+            "Très faible",
+            "Très faible",
+            "Faible",
+            "Moyen",
+            "Correct",
+            "Fort",
+            "Excellent",
+            "Excellent",
+            "Excellent",
+        ]
         return labels[score] if score < len(labels) else "Excellent"
-        
-    
+
     from typing import List
 
     @staticmethod
@@ -126,7 +142,7 @@ class EvaluationPassword():
         Vérifie si un mot de passe a été compromis via l'API Have I Been Pwned.
         """
         try:
-            sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+            sha1_password = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
             prefix, suffix = sha1_password[:5], sha1_password[5:]
             url = f"https://api.pwnedpasswords.com/range/{prefix}"
             response = requests.get(url, timeout=5)
@@ -139,8 +155,7 @@ class EvaluationPassword():
         except Exception as e:
             print(f"Erreur inattendue lors de la vérification du mot de passe : {e}")
             return False
-        
-        
+
     @staticmethod
     def estimate_crack_time(password):
         """
@@ -151,7 +166,7 @@ class EvaluationPassword():
             char_space += 26  # Lettres minuscules
         if any(c.isupper() for c in password):
             char_space += 26  # Lettres majuscules
-        if any(c.isdigit()   for c in password):
+        if any(c.isdigit() for c in password):
             char_space += 10  # Chiffres
         if any(c in string.punctuation for c in password):
             char_space += len(string.punctuation)  # Caractères spéciaux
@@ -161,7 +176,9 @@ class EvaluationPassword():
         seconds = total_combinations / guesses_per_second
 
         # Documentation des hypothèses
-        print("Hypothèse : 1 milliard de tentatives par seconde pour une attaque par force brute.")
+        print(
+            "Hypothèse : 1 milliard de tentatives par seconde pour une attaque par force brute."
+        )
         if seconds < 60:
             return f"{seconds:.2f} secondes"
         elif seconds < 3600:
@@ -172,10 +189,9 @@ class EvaluationPassword():
             return f"{seconds / 86400:.2f} jours"
         else:
             return f"{seconds / 31536000:.2f} années"
-        
-          
+
     def analyze_and_evaluate_passwords(self) -> None:
-       
+
         while not self.auth.authenticate_master_password_once():
             print("Authentification échouée. Veuillez réessayer.")
         print("\nChoisissez le mode d'analyse :")
@@ -186,7 +202,7 @@ class EvaluationPassword():
         common_file = os.path.join(self.storage.secure_directory, "common_patterns.txt")
         if os.path.exists(common_file):
             try:
-                with open(common_file, 'r', encoding='utf-8') as f:
+                with open(common_file, "r", encoding="utf-8") as f:
                     common_patterns = f.read().splitlines()
             except Exception as e:
                 print(f"Erreur lors du chargement des motifs courants : {e}")
@@ -195,8 +211,12 @@ class EvaluationPassword():
             if not password:
                 print("Aucun mot de passe fourni.")
                 return
-            print(f"\nForce du mot de passe : {EvaluationPassword.evaluate_password_strength(password, common_patterns)}")
-            for rec in filter(None, EvaluationPassword.quality_recommendations(password)):
+            print(
+                f"\nForce du mot de passe : {EvaluationPassword.evaluate_password_strength(password, common_patterns)}"
+            )
+            for rec in filter(
+                None, EvaluationPassword.quality_recommendations(password)
+            ):
                 print(f"- {rec}")
         elif mode == "2":
             filepath = os.path.join(self.storage.secure_directory, "passwords.json")
@@ -213,22 +233,36 @@ class EvaluationPassword():
                     nonce = data[16:28]
                     tag = data[28:44]
                     encrypted = data[44:]
-                    key = self.enc.derive_key_from_master_password(self.auth._master_plaintext, salt)
+                    key = self.enc.derive_key_from_master_password(
+                        self.auth._master_plaintext, salt
+                    )
                     plain = self.enc.decrypt_password(encrypted, key, nonce, tag)
-                    strength = EvaluationPassword.evaluate_password_strength(plain, common_patterns)
-                    compromised = "Compromis" if EvaluationPassword.check_password_breach(plain) else "Sûr"
-                    print(f"Index {rec.get('index', '?')} : {plain} - Force: {strength} - Statut: {compromised}")
-                    report.append({
-                        "index": rec.get("index", "?"),
-                        "password": plain,
-                        "strength": strength,
-                        "status": compromised
-                    })
+                    strength = EvaluationPassword.evaluate_password_strength(
+                        plain, common_patterns
+                    )
+                    compromised = (
+                        "Compromis"
+                        if EvaluationPassword.check_password_breach(plain)
+                        else "Sûr"
+                    )
+                    print(
+                        f"Index {rec.get('index', '?')} : {plain} - Force: {strength} - Statut: {compromised}"
+                    )
+                    report.append(
+                        {
+                            "index": rec.get("index", "?"),
+                            "password": plain,
+                            "strength": strength,
+                            "status": compromised,
+                        }
+                    )
                 except Exception as e:
                     print(f"Erreur pour l'enregistrement {rec.get('index', '?')} : {e}")
-            report_path = os.path.join(self.storage.secure_directory, "password_analysis_report.json")
+            report_path = os.path.join(
+                self.storage.secure_directory, "password_analysis_report.json"
+            )
             try:
-                with open(report_path, 'w', encoding='utf-8') as f:
+                with open(report_path, "w", encoding="utf-8") as f:
                     json.dump(report, f, indent=4)
                 print(Fore.GREEN + f"Rapport d'analyse généré : {report_path}")
             except Exception as e:

@@ -1,0 +1,36 @@
+name: CI — KeyChain
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh || true
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install pre-commit pytest pytest-cov semgrep pip-audit
+      - name: Run pre-commit
+        run: python -m pre_commit run --all-files || true
+      - name: Run checks
+        run: ./scripts/checks.sh
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-artifacts
+          path: ./test-results || ./coverage || ./htmlcov

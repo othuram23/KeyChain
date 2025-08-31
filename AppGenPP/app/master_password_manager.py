@@ -1,14 +1,18 @@
-import os
-import getpass
 import base64
+import getpass
 import hashlib
 import json
+import os
+
 from passlib.context import CryptContext
+
 
 class MasterPasswordManager:
     def __init__(self, secure_directory):
         self.secure_directory = secure_directory
-        self.pwd_context = CryptContext(schemes=["bcrypt", "argon2", "pbkdf2_sha256"], deprecated="auto")
+        self.pwd_context = CryptContext(
+            schemes=["bcrypt", "argon2", "pbkdf2_sha256"], deprecated="auto"
+        )
         self.master_file = os.path.join(self.secure_directory, "master_password.json")
         self._master_hash = None
         self._load_master_hash()
@@ -40,7 +44,9 @@ class MasterPasswordManager:
         self._master_hash = hash_
         print("Mot de passe maître défini avec succès.")
 
-    def verify_master_password(self, prompt="Entrez votre mot de passe maître : ", max_attempts=5):
+    def verify_master_password(
+        self, prompt="Entrez votre mot de passe maître : ", max_attempts=5
+    ):
         for attempt in range(max_attempts):
             pwd = getpass.getpass(prompt)
             if self.pwd_context.verify(pwd, self._master_hash):
@@ -51,7 +57,7 @@ class MasterPasswordManager:
         return None
 
     def change_master_password(self):
-        
+
         print("Changement du mot de passe maître.")
         old_pwd = self.verify_master_password("Entrez l'ancien mot de passe maître : ")
         if not old_pwd:

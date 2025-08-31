@@ -1,42 +1,58 @@
-import os, json, csv, gzip, zlib, base64, binascii, codecs, random, string, hashlib, hmac, logging, datetime, smtplib, time, requests
-from collections import defaultdict, Counter
+import base64
+import binascii
+import codecs
+import csv
+import datetime
+import gzip
+import hashlib
+import hmac
+import json
+import logging
+import os
+import random
+import smtplib
+import string
+import time
+import zlib
+from collections import Counter, defaultdict
 from email.mime.text import MIMEText
 from getpass import getpass
 
-#import pyotp
-#import pyperclip  # Pour copier dans le presse-papiers
-import yaml       # Pour export YAML
+import requests
+# import pyotp
+# import pyperclip  # Pour copier dans le presse-papiers
+import yaml  # Pour export YAML
+from colorama import Fore, Style, init
 
-from colorama import init, Fore, Style
 init(autoreset=True)
 
-#from Crypto.Cipher import AES
-#from Crypto.Random import get_random_bytes
-#from Crypto.Hash import SHA256
-#from Crypto.Protocol.KDF import PBKDF2
+# from Crypto.Cipher import AES
+# from Crypto.Random import get_random_bytes
+# from Crypto.Hash import SHA256
+# from Crypto.Protocol.KDF import PBKDF2
 
-#from passlib.context import CryptContext
-import secrets
+import bz2
 import heapq
 import lzma
-import bz2
-#import snappy
-import lz4.frame
-import zstandard as zstd
-import brotli
 import quopri
+# from passlib.context import CryptContext
+import secrets
 from email.header import Header, decode_header
+
+import brotli
+# import snappy
+import lz4.frame
 import numpy as np
-
-
-from report_manager import ReportManager
-from password_generator import PasswordGenerator
-from evaluation_password import EvaluationPassword
-from storage_manager import StorageManager
-from encryption_manager import EncryptionManager
+import zstandard as zstd
 from auth_manager import AuthManager
 from config_manager import ConfigManager
+from encryption_manager import EncryptionManager
+from evaluation_password import EvaluationPassword
 from master_password_manager import MasterPasswordManager
+from password_generator import PasswordGenerator
+from report_manager import ReportManager
+from storage_manager import StorageManager
+
 
 class EmailSender:
     def __init__(self, smtp_server, smtp_port, sender_email, sender_password):
@@ -48,9 +64,9 @@ class EmailSender:
     def send_email(self, recipient_email, subject, message):
         try:
             msg = MIMEText(message)
-            msg['Subject'] = subject
-            msg['From'] = self.sender_email
-            msg['To'] = recipient_email
+            msg["Subject"] = subject
+            msg["From"] = self.sender_email
+            msg["To"] = recipient_email
 
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.starttls()
@@ -61,10 +77,10 @@ class EmailSender:
             print(f"Erreur lors de l'envoi de l'e-mail : {e}")
 
 
-class SessionManager(): 
-    
+class SessionManager:
+
     def __init__(self):
-        
+
         self.conf = ConfigManager()
         self.passgen = PasswordGenerator()
         self.session = SessionManager()
@@ -78,14 +94,12 @@ class SessionManager():
 
     def setup_logging(self):
         logging.basicConfig(
-            filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "password_manager.log"),
+            filename=os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "password_manager.log"
+            ),
             level=logging.INFO,
-            format="%(asctime)s - %(levelname)s - %(message)s"
-        )        
-
-
-
-
+            format="%(asctime)s - %(levelname)s - %(message)s",
+        )
 
     def send_security_alert(self, email, message):
         """
@@ -98,9 +112,9 @@ class SessionManager():
             smtp_port = 587
 
             msg = MIMEText(message)
-            msg['Subject'] = "Alerte de sécurité KeyChain"
-            msg['From'] = sender_email
-            msg['To'] = email
+            msg["Subject"] = "Alerte de sécurité KeyChain"
+            msg["From"] = sender_email
+            msg["To"] = email
 
             with smtplib.SMTP(smtp_server, smtp_port) as server:
                 server.starttls()
@@ -109,4 +123,3 @@ class SessionManager():
             print(f"Alerte envoyée à {email}.")
         except Exception as e:
             print(f"Erreur lors de l'envoi de l'alerte : {e}")
-

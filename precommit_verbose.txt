@@ -1,0 +1,9 @@
+[INFO] Initializing environment for https://github.com/pre-commit/pre-commit-hooks.
+[INFO] Initializing environment for https://github.com/psf/black.
+[INFO] Initializing environment for https://github.com/PyCQA/isort.
+An unexpected error has occurred: CalledProcessError: command: ('/usr/bin/git', 'checkout', '5.16.0')
+return code: 1
+stdout: (none)
+stderr:
+    error: pathspec '5.16.0' did not match any file(s) known to git
+Check the log at /root/.cache/pre-commit/pre-commit.log

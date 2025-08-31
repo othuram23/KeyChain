@@ -1,65 +1,63 @@
+import base64
+import binascii
+import bz2
+import codecs
+import csv
+import datetime
+import gzip
+import hashlib
+import heapq
+import hmac
+import io
+import json
+import logging
+import lzma
+import os
+import quopri
+import random
+import secrets
+import smtplib
+import string
+import struct
+import sys
+import time
+import uu
+import zlib
+from collections import Counter, defaultdict
 from email.encoders import encode_base64
+from email.header import Header, decode_header
+
+import brotli
+import lz4.frame
+import numpy as np
+import requests
+import zstandard as zstd
 from auth_manager import AuthManager
+from colorama import Fore, Style, init
+from config_manager import ConfigManager
 from encryption_manager import EncryptionManager
-from master_password_manager import MasterPasswordManager
-from storage_manager import StorageManager
 from evaluation_password import EvaluationPassword
+from main import MainMenu
+from master_password_manager import MasterPasswordManager
 from password_generator import PasswordGenerator
 from report_manager import ReportManager
 from session_manager import SessionManager
-from config_manager import ConfigManager
-from main import MainMenu
-import numpy as np
-from email.header import Header, decode_header
-import struct
-import quopri
-import brotli
-import zstandard as zstd
-import lz4.frame
-import bz2
-import lzma
-import heapq
-import secrets
-import os
-import json
-import csv
-import gzip
-import zlib
-import base64
-import binascii
-import codecs
-import random
-import string
-import hashlib
-import hmac
-import logging
-import datetime
-import smtplib
-import time
-import requests
-from collections import defaultdict, Counter
-import uu
-import io
-import sys
-import base64
+from storage_manager import StorageManager
 
-from colorama import init, Fore, Style
 init(autoreset=True)
 
+import base64
+import hashlib
+import hmac
+from typing import Any, Optional, Union
+
+import snappy
 # Correction des imports Crypto (remplacer Cryptography par Crypto)
 from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
-
+from Crypto.Random import get_random_bytes
 from passlib.context import CryptContext
-import snappy
-
-
-import hashlib
-import base64
-import hmac
-from typing import Optional, Union, Any
 
 try:
     import blake3  # pip install blake3
@@ -73,21 +71,107 @@ except ImportError:
 
 try:
     from argon2 import PasswordHasher  # pip install argon2-cffi
+
     ph = PasswordHasher()
 except ImportError:
     ph = None
 
 
+base91_alphabet = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "!",
+    "#",
+    "$",
+    "%",
+    "&",
+    "(",
+    ")",
+    "*",
+    "+",
+    ",",
+    ".",
+    "/",
+    ":",
+    ";",
+    "<",
+    "=",
+    ">",
+    "?",
+    "@",
+    "[",
+    "]",
+    "^",
+    "_",
+    "`",
+    "{",
+    "|",
+    "}",
+    "~",
+    '"',
+]
 
-base91_alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-	'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-	'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '#', '$',
-	'%', '&', '(', ')', '*', '+', ',', '.', '/', ':', ';', '<', '=',
-	'>', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '"']
-
-decode_table = dict((v,k) for k,v in enumerate(base91_alphabet))
+decode_table = dict((v, k) for k, v in enumerate(base91_alphabet))
 PY2 = sys.version_info[0] == 2
 kShortened = 0b111  # last two-byte char encodes <= 7 bits
 kIllegals = [chr(0), chr(10), chr(13), chr(34), chr(38), chr(92)]
@@ -113,30 +197,34 @@ class HashUtility:
         algorithm: str = "sha256",
         salt: Optional[Union[str, bytes]] = None,
         encoding: str = "hex",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> str:
-        data_bytes = data.encode('utf-8') if isinstance(data, str) else data
+        data_bytes = data.encode("utf-8") if isinstance(data, str) else data
 
         if salt is not None:
-            salt_bytes = salt.encode('utf-8') if isinstance(salt, str) else salt
+            salt_bytes = salt.encode("utf-8") if isinstance(salt, str) else salt
             data_bytes = salt_bytes + data_bytes
 
-        alg = algorithm.lower().replace('-', '_')
+        alg = algorithm.lower().replace("-", "_")
 
-        if alg == 'blake3':
+        if alg == "blake3":
             if blake3 is None:
                 raise ValueError("BLAKE3 non installé. `pip install blake3`.")
             hasher = blake3.blake3()
             hasher.update(data_bytes)
             raw = hasher.digest()
-        elif alg in ('shake_128', 'shake_256'):
-            output_len = kwargs.get('output_length', 32)
+        elif alg in ("shake_128", "shake_256"):
+            output_len = kwargs.get("output_length", 32)
             hasher = getattr(hashlib, alg)()
             hasher.update(data_bytes)
             raw = hasher.digest(output_len)
-        elif alg in ('blake2b', 'blake2s'):
-            digest_size = kwargs.get('digest_size')
-            hasher = getattr(hashlib, alg)(digest_size=digest_size) if digest_size else getattr(hashlib, alg)()
+        elif alg in ("blake2b", "blake2s"):
+            digest_size = kwargs.get("digest_size")
+            hasher = (
+                getattr(hashlib, alg)(digest_size=digest_size)
+                if digest_size
+                else getattr(hashlib, alg)()
+            )
             hasher.update(data_bytes)
             raw = hasher.digest()
         else:
@@ -147,10 +235,10 @@ class HashUtility:
             hasher.update(data_bytes)
             raw = hasher.digest()
 
-        if encoding == 'hex':
+        if encoding == "hex":
             return raw.hex()
-        elif encoding == 'base64':
-            return base64.b64encode(raw).decode('ascii')
+        elif encoding == "base64":
+            return base64.b64encode(raw).decode("ascii")
         else:
             raise ValueError("Encodage inconnu. Utiliser 'hex' ou 'base64'.")
 
@@ -162,19 +250,23 @@ class HashUtility:
         encoding: str = "hex",
         text_mode: bool = False,
         file_encoding: str = "utf-8",
-        **kwargs: Any
+        **kwargs: Any,
     ) -> str:
-        alg = algorithm.lower().replace('-', '_')
+        alg = algorithm.lower().replace("-", "_")
 
-        if alg == 'blake3':
+        if alg == "blake3":
             if blake3 is None:
                 raise ValueError("BLAKE3 non installé. `pip install blake3`.")
             hasher = blake3.blake3()
-        elif alg in ('shake_128', 'shake_256'):
+        elif alg in ("shake_128", "shake_256"):
             hasher = getattr(hashlib, alg)()
-        elif alg in ('blake2b', 'blake2s'):
-            digest_size = kwargs.get('digest_size')
-            hasher = getattr(hashlib, alg)(digest_size=digest_size) if digest_size else getattr(hashlib, alg)()
+        elif alg in ("blake2b", "blake2s"):
+            digest_size = kwargs.get("digest_size")
+            hasher = (
+                getattr(hashlib, alg)(digest_size=digest_size)
+                if digest_size
+                else getattr(hashlib, alg)()
+            )
         else:
             try:
                 hasher = hashlib.new(alg)
@@ -182,31 +274,35 @@ class HashUtility:
                 raise ValueError(f"Algorithme non supporté: {algorithm}")
 
         if salt is not None:
-            salt_bytes = salt.encode('utf-8') if isinstance(salt, str) else salt
+            salt_bytes = salt.encode("utf-8") if isinstance(salt, str) else salt
             hasher.update(salt_bytes)
 
-        mode = 'r' if text_mode else 'rb'
+        mode = "r" if text_mode else "rb"
         with open(file_path, mode, encoding=file_encoding if text_mode else None) as f:
-            for chunk in iter(lambda: f.read(8192), '' if text_mode else b''):
+            for chunk in iter(lambda: f.read(8192), "" if text_mode else b""):
                 chunk_bytes = chunk.encode(file_encoding) if text_mode else chunk
                 hasher.update(chunk_bytes)
 
-        raw = hasher.digest(kwargs.get('output_length', 32)) if alg in ('shake_128', 'shake_256') else hasher.digest()
+        raw = (
+            hasher.digest(kwargs.get("output_length", 32))
+            if alg in ("shake_128", "shake_256")
+            else hasher.digest()
+        )
 
-        if encoding == 'hex':
+        if encoding == "hex":
             return raw.hex()
-        elif encoding == 'base64':
-            return base64.b64encode(raw).decode('ascii')
+        elif encoding == "base64":
+            return base64.b64encode(raw).decode("ascii")
         else:
             raise ValueError("Encodage inconnu. Utiliser 'hex' ou 'base64'.")
 
     @staticmethod
     def compare_hashes(hash1: str, hash2: str, encoding: str = "hex") -> bool:
         try:
-            if encoding == 'hex':
+            if encoding == "hex":
                 b1 = bytes.fromhex(hash1)
                 b2 = bytes.fromhex(hash2)
-            elif encoding == 'base64':
+            elif encoding == "base64":
                 b1 = base64.b64decode(hash1)
                 b2 = base64.b64decode(hash2)
             else:
@@ -217,7 +313,9 @@ class HashUtility:
         return hmac.compare_digest(b1, b2)
 
     @staticmethod
-    def hmac_hash(data: Union[str, bytes], key: Union[str, bytes], algorithm: str = "sha256") -> str:
+    def hmac_hash(
+        data: Union[str, bytes], key: Union[str, bytes], algorithm: str = "sha256"
+    ) -> str:
         key_bytes = key.encode() if isinstance(key, str) else key
         data_bytes = data.encode() if isinstance(data, str) else data
         try:
@@ -256,7 +354,7 @@ class HashUtility:
 
 
 def base91_decode(encoded_str):
-    ''' Decode Base91 string to a bytearray '''
+    """Decode Base91 string to a bytearray"""
     v = -1
     b = 0
     n = 0
@@ -265,33 +363,34 @@ def base91_decode(encoded_str):
         if not strletter in decode_table:
             continue
         c = decode_table[strletter]
-        if(v < 0):
+        if v < 0:
             v = c
         else:
-            v += c*91
+            v += c * 91
             b |= v << n
-            n += 13 if (v & 8191)>88 else 14
+            n += 13 if (v & 8191) > 88 else 14
             while True:
-                out += struct.pack('B', b&255)
+                out += struct.pack("B", b & 255)
                 b >>= 8
                 n -= 8
-                if not n>7:
+                if not n > 7:
                     break
             v = -1
-    if v+1:
-        out += struct.pack('B', (b | v << n) & 255 )
+    if v + 1:
+        out += struct.pack("B", (b | v << n) & 255)
     return out
 
+
 def base91_encode(bindata):
-    ''' Encode a bytearray to a Base91 string '''
+    """Encode a bytearray to a Base91 string"""
     b = 0
     n = 0
-    out = ''
+    out = ""
     for count in range(len(bindata)):
-        byte = bindata[count:count+1]
-        b |= struct.unpack('B', byte)[0] << n
+        byte = bindata[count : count + 1]
+        b |= struct.unpack("B", byte)[0] << n
         n += 8
-        if n>13:
+        if n > 13:
             v = b & 8191
             if v > 88:
                 b >>= 13
@@ -303,9 +402,10 @@ def base91_encode(bindata):
             out += base91_alphabet[v % 91] + base91_alphabet[v // 91]
     if n:
         out += base91_alphabet[b % 91]
-        if n>7 or b>90:
+        if n > 7 or b > 90:
             out += base91_alphabet[b // 91]
     return out
+
 
 def base122_encode(rawData, warnings=True):
     if PY2 and warnings:
@@ -409,14 +509,18 @@ def ascii85_decode(data: str) -> str:
 
 def base45_encode(data: str) -> str:
     b45_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
-    b = data.encode('utf-8')
+    b = data.encode("utf-8")
     result = ""
     i = 0
 
     while i < len(b):
-        if i+1 < len(b):
-            x = (b[i] << 8) + b[i+1]
-            result += b45_chars[x % 45] + b45_chars[(x // 45) % 45] + b45_chars[x // (45*45)]
+        if i + 1 < len(b):
+            x = (b[i] << 8) + b[i + 1]
+            result += (
+                b45_chars[x % 45]
+                + b45_chars[(x // 45) % 45]
+                + b45_chars[x // (45 * 45)]
+            )
             i += 2
 
         else:
@@ -433,30 +537,33 @@ def base45_decode(data: str) -> str:
 
     while i < len(data):
 
-        if i+2 < len(data):
-            x = b45_chars.index(data[i]) + b45_chars.index(data[i+1]) * \
-                45 + b45_chars.index(data[i+2]) * 45 * 45
+        if i + 2 < len(data):
+            x = (
+                b45_chars.index(data[i])
+                + b45_chars.index(data[i + 1]) * 45
+                + b45_chars.index(data[i + 2]) * 45 * 45
+            )
             result.append(x >> 8)
             result.append(x & 0xFF)
             i += 3
 
         else:
-            x = b45_chars.index(data[i]) + b45_chars.index(data[i+1]) * 45
+            x = b45_chars.index(data[i]) + b45_chars.index(data[i + 1]) * 45
             result.append(x)
             i += 2
-    return result.decode('utf-8', errors='replace')
+    return result.decode("utf-8", errors="replace")
 
 
 def base58_encode(data: str) -> str:
     alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-    b = data.encode('utf-8')
-    num = int.from_bytes(b, 'big')
+    b = data.encode("utf-8")
+    num = int.from_bytes(b, "big")
     result = ""
 
     while num > 0:
         num, rem = divmod(num, 58)
         result = alphabet[rem] + result
-    n_pad = len(b) - len(b.lstrip(b'\0'))
+    n_pad = len(b) - len(b.lstrip(b"\0"))
     return alphabet[0] * n_pad + result
 
 
@@ -466,21 +573,21 @@ def base58_decode(data: str) -> str:
 
     for char in data:
         num = num * 58 + alphabet.index(char)
-    b = num.to_bytes((num.bit_length() + 7) // 8, 'big')
+    b = num.to_bytes((num.bit_length() + 7) // 8, "big")
     n_pad = len(data) - len(data.lstrip(alphabet[0]))
-    return (b'\0' * n_pad + b).decode('utf-8', errors='replace')
+    return (b"\0" * n_pad + b).decode("utf-8", errors="replace")
 
 
 def base62_encode(data: str) -> str:
     alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    b = data.encode('utf-8')
-    num = int.from_bytes(b, 'big')
+    b = data.encode("utf-8")
+    num = int.from_bytes(b, "big")
     result = ""
 
     while num:
         num, rem = divmod(num, 62)
         result = alphabet[rem] + result
-    n_pad = len(b) - len(b.lstrip(b'\0'))
+    n_pad = len(b) - len(b.lstrip(b"\0"))
     return alphabet[0] * n_pad + result
 
 
@@ -490,19 +597,19 @@ def base62_decode(data: str) -> str:
 
     for char in data:
         num = num * 62 + alphabet.index(char)
-    b = num.to_bytes((num.bit_length() + 7) // 8, 'big')
+    b = num.to_bytes((num.bit_length() + 7) // 8, "big")
     n_pad = len(data) - len(data.lstrip(alphabet[0]))
-    return (b'\0' * n_pad + b).decode('utf-8', errors='replace')
+    return (b"\0" * n_pad + b).decode("utf-8", errors="replace")
 
 
 def base65536_encode(data: str) -> str:
-    b = data.encode('utf-8')
+    b = data.encode("utf-8")
     result = ""
 
     for i in range(0, len(b), 2):
 
-        if i+1 < len(b):
-            val = b[i] << 8 | b[i+1]
+        if i + 1 < len(b):
+            val = b[i] << 8 | b[i + 1]
 
         else:
             val = b[i]
@@ -522,17 +629,17 @@ def base65536_decode(data: str) -> str:
 
         else:
             b.append(val)
-    return bytes(b).decode('utf-8', errors='replace')
+    return bytes(b).decode("utf-8", errors="replace")
 
 
 # Encodages Cryptographiques
 def rot5_encode(data: str) -> str:
-    result = ''
+    result = ""
 
     for c in data:
 
         if c.isdigit():
-            result += chr((ord(c) - ord('0') + 5) % 10 + ord('0'))
+            result += chr((ord(c) - ord("0") + 5) % 10 + ord("0"))
 
         else:
             result += c
@@ -544,12 +651,12 @@ def rot5_decode(data: str) -> str:
 
 
 def rot18_encode(data: str) -> str:
-    result = ''
+    result = ""
 
     for c in data:
 
         if c.isalpha():
-            result += codecs.encode(c, 'rot_13')
+            result += codecs.encode(c, "rot_13")
 
         elif c.isdigit():
             result += rot5_encode(c)
@@ -564,7 +671,7 @@ def rot18_decode(data: str) -> str:
 
 
 def rot47_encode(data: str) -> str:
-    result = ''
+    result = ""
 
     for c in data:
 
@@ -587,8 +694,8 @@ def vigenere_encode(data: str, key: str = "KEY") -> str:
     for i, c in enumerate(data):
 
         if c.isalpha():
-            base = ord('A') if c.isupper() else ord('a')
-            shift = ord(key[i % len(key)]) - ord('A')
+            base = ord("A") if c.isupper() else ord("a")
+            shift = ord(key[i % len(key)]) - ord("A")
             result += chr((ord(c) - base + shift) % 26 + base)
 
         else:
@@ -603,8 +710,8 @@ def vigenere_decode(data: str, key: str = "KEY") -> str:
     for i, c in enumerate(data):
 
         if c.isalpha():
-            base = ord('A') if c.isupper() else ord('a')
-            shift = ord(key[i % len(key)]) - ord('A')
+            base = ord("A") if c.isupper() else ord("a")
+            shift = ord(key[i % len(key)]) - ord("A")
             result += chr((ord(c) - base - shift) % 26 + base)
 
         else:
@@ -648,7 +755,7 @@ def affine_encode(data: str, a: int = 5, b: int = 8) -> str:
     for c in data:
 
         if c.isalpha():
-            base = ord('A') if c.isupper() else ord('a')
+            base = ord("A") if c.isupper() else ord("a")
             result += chr(((a * (ord(c) - base) + b) % 26) + base)
 
         else:
@@ -663,7 +770,7 @@ def affine_decode(data: str, a: int = 5, b: int = 8) -> str:
     for c in data:
 
         if c.isalpha():
-            base = ord('A') if c.isupper() else ord('a')
+            base = ord("A") if c.isupper() else ord("a")
             result += chr((inv_a * ((ord(c) - base) - b)) % 26 + base)
 
         else:
@@ -675,7 +782,7 @@ def rail_fence_encode(data: str, num_rails: int = 3) -> str:
 
     if num_rails <= 1:
         return data
-    rails = [''] * num_rails
+    rails = [""] * num_rails
     rail = 0
     direction = 1
 
@@ -685,7 +792,7 @@ def rail_fence_encode(data: str, num_rails: int = 3) -> str:
 
         if rail == 0 or rail == num_rails - 1:
             direction *= -1
-    return ''.join(rails)
+    return "".join(rails)
 
 
 def rail_fence_decode(data: str, num_rails: int = 3) -> str:
@@ -701,7 +808,7 @@ def rail_fence_decode(data: str, num_rails: int = 3) -> str:
     index = 0
 
     for r in rail_len:
-        rails.append(data[index:index+r])
+        rails.append(data[index : index + r])
         index += r
     result = []
     rail_indices = [0] * num_rails
@@ -710,13 +817,13 @@ def rail_fence_decode(data: str, num_rails: int = 3) -> str:
         rail = pattern[i % len(pattern)]
         result.append(rails[rail][rail_indices[rail]])
         rail_indices[rail] += 1
-    return ''.join(result)
+    return "".join(result)
 
 
 def bifid_encode(data: str, key: str = "ABCDEFGHIKLMNOPQRSTUVWXYZ") -> str:
     data = data.upper().replace("J", "I")
-    square = [key[i*5:(i+1)*5] for i in range(5)]
-    pos = {square[i][j]: (i+1, j+1) for i in range(5) for j in range(5)}
+    square = [key[i * 5 : (i + 1) * 5] for i in range(5)]
+    pos = {square[i][j]: (i + 1, j + 1) for i in range(5) for j in range(5)}
     rows, cols = [], []
 
     for c in data:
@@ -725,20 +832,20 @@ def bifid_encode(data: str, key: str = "ABCDEFGHIKLMNOPQRSTUVWXYZ") -> str:
             r, c_val = pos[c]
             rows.append(str(r))
             cols.append(str(c_val))
-    merged = ''.join(rows + cols)
+    merged = "".join(rows + cols)
     result = ""
 
     for i in range(0, len(merged), 2):
         r = int(merged[i]) - 1
-        c_val = int(merged[i+1]) - 1
+        c_val = int(merged[i + 1]) - 1
         result += square[r][c_val]
     return result
 
 
 def bifid_decode(data: str, key: str = "ABCDEFGHIKLMNOPQRSTUVWXYZ") -> str:
     data = data.upper().replace("J", "I")
-    square = [key[i*5:(i+1)*5] for i in range(5)]
-    pos = {square[i][j]: (i+1, j+1) for i in range(5) for j in range(5)}
+    square = [key[i * 5 : (i + 1) * 5] for i in range(5)]
+    pos = {square[i][j]: (i + 1, j + 1) for i in range(5) for j in range(5)}
     nums = []
 
     for c in data:
@@ -752,7 +859,7 @@ def bifid_decode(data: str, key: str = "ABCDEFGHIKLMNOPQRSTUVWXYZ") -> str:
 
     for i in range(half):
         r = int(nums[i]) - 1
-        c_val = int(nums[i+half]) - 1
+        c_val = int(nums[i + half]) - 1
         result += square[r][c_val]
     return result
 
@@ -766,7 +873,7 @@ def generate_playfair_square(key: str) -> list:
 
         if c not in square:
             square.append(c)
-    return [square[i*5:(i+1)*5] for i in range(5)]
+    return [square[i * 5 : (i + 1) * 5] for i in range(5)]
 
 
 def playfair_encode(data: str, key: str = "PLAYFAIREXAMPLE") -> str:
@@ -778,16 +885,17 @@ def playfair_encode(data: str, key: str = "PLAYFAIREXAMPLE") -> str:
 
             if letter in row:
                 return i, row.index(letter)
+
     data = data.upper().replace("J", "I")
     digrams = []
     i = 0
 
     while i < len(data):
         a = data[i]
-        b = data[i+1] if i+1 < len(data) else 'X'
+        b = data[i + 1] if i + 1 < len(data) else "X"
 
         if a == b:
-            digrams.append(a + 'X')
+            digrams.append(a + "X")
             i += 1
 
         else:
@@ -800,10 +908,10 @@ def playfair_encode(data: str, key: str = "PLAYFAIREXAMPLE") -> str:
         r2, c2 = pos(d[1])
 
         if r1 == r2:
-            result += square[r1][(c1+1) % 5] + square[r2][(c2+1) % 5]
+            result += square[r1][(c1 + 1) % 5] + square[r2][(c2 + 1) % 5]
 
         elif c1 == c2:
-            result += square[(r1+1) % 5][c1] + square[(r2+1) % 5][c2]
+            result += square[(r1 + 1) % 5][c1] + square[(r2 + 1) % 5][c2]
 
         else:
             result += square[r1][c2] + square[r2][c1]
@@ -819,7 +927,8 @@ def playfair_decode(data: str, key: str = "PLAYFAIREXAMPLE") -> str:
 
             if letter in row:
                 return i, row.index(letter)
-    digrams = [data[i:i+2] for i in range(0, len(data), 2)]
+
+    digrams = [data[i : i + 2] for i in range(0, len(data), 2)]
     result = ""
 
     for d in digrams:
@@ -827,10 +936,10 @@ def playfair_decode(data: str, key: str = "PLAYFAIREXAMPLE") -> str:
         r2, c2 = pos(d[1])
 
         if r1 == r2:
-            result += square[r1][(c1-1) % 5] + square[r2][(c2-1) % 5]
+            result += square[r1][(c1 - 1) % 5] + square[r2][(c2 - 1) % 5]
 
         elif c1 == c2:
-            result += square[(r1-1) % 5][c1] + square[(r2-1) % 5][c2]
+            result += square[(r1 - 1) % 5][c1] + square[(r2 - 1) % 5][c2]
 
         else:
             result += square[r1][c2] + square[r2][c1]
@@ -845,7 +954,7 @@ def hill_encode(data: str, key_matrix: list = [[3, 3], [2, 5]]) -> str:
     result = ""
 
     for i in range(0, len(data), 2):
-        pair = [ord(data[i]) - 65, ord(data[i+1]) - 65]
+        pair = [ord(data[i]) - 65, ord(data[i + 1]) - 65]
         encoded = np.dot(key_matrix, pair) % 26
         result += chr(int(encoded[0]) + 65) + chr(int(encoded[1]) + 65)
     return result
@@ -853,14 +962,18 @@ def hill_encode(data: str, key_matrix: list = [[3, 3], [2, 5]]) -> str:
 
 def hill_decode(data: str, key_matrix: list = [[3, 3], [2, 5]]) -> str:
     data = data.upper().replace(" ", "")
-    det = (key_matrix[0][0]*key_matrix[1][1] - key_matrix[0][1]*key_matrix[1][0]) % 26
+    det = (
+        key_matrix[0][0] * key_matrix[1][1] - key_matrix[0][1] * key_matrix[1][0]
+    ) % 26
     inv_det = modinv(det, 26)
-    inv_matrix = [[key_matrix[1][1]*inv_det % 26, (-key_matrix[0][1]*inv_det) % 26],
-                  [(-key_matrix[1][0]*inv_det) % 26, key_matrix[0][0]*inv_det % 26]]
+    inv_matrix = [
+        [key_matrix[1][1] * inv_det % 26, (-key_matrix[0][1] * inv_det) % 26],
+        [(-key_matrix[1][0] * inv_det) % 26, key_matrix[0][0] * inv_det % 26],
+    ]
     result = ""
 
     for i in range(0, len(data), 2):
-        pair = [ord(data[i]) - 65, ord(data[i+1]) - 65]
+        pair = [ord(data[i]) - 65, ord(data[i + 1]) - 65]
         decoded = np.dot(inv_matrix, pair) % 26
         result += chr(int(decoded[0]) + 65) + chr(int(decoded[1]) + 65)
     return result
@@ -868,35 +981,35 @@ def hill_decode(data: str, key_matrix: list = [[3, 3], [2, 5]]) -> str:
 
 # Encodages Binaires/Compression
 def base128_encode(data: str) -> str:
-    b = data.encode('utf-8')
-    num = int.from_bytes(b, 'big')
-    alphabet = ''.join(chr(i) for i in range(128))
+    b = data.encode("utf-8")
+    num = int.from_bytes(b, "big")
+    alphabet = "".join(chr(i) for i in range(128))
     result = ""
 
     while num:
         num, rem = divmod(num, 128)
         result = alphabet[rem] + result
-    n_pad = len(b) - len(b.lstrip(b'\0'))
+    n_pad = len(b) - len(b.lstrip(b"\0"))
     return alphabet[0] * n_pad + result
 
 
 def base128_decode(data: str) -> str:
-    alphabet = ''.join(chr(i) for i in range(128))
+    alphabet = "".join(chr(i) for i in range(128))
     num = 0
     for char in data:
         num = num * 128 + alphabet.index(char)
-    b = num.to_bytes((num.bit_length() + 7) // 8, 'big')
+    b = num.to_bytes((num.bit_length() + 7) // 8, "big")
     n_pad = len(data) - len(data.lstrip(alphabet[0]))
-    return (b'\0' * n_pad + b).decode('utf-8', errors='replace')
+    return (b"\0" * n_pad + b).decode("utf-8", errors="replace")
 
 
 def base256_encode(data: str) -> str:
     # Représentation littérale en Base256 (affichage hexadécimal)
-    return data.encode('utf-8').hex()
+    return data.encode("utf-8").hex()
 
 
 def base256_decode(data: str) -> str:
-    return bytes.fromhex(data).decode('utf-8', errors='replace')
+    return bytes.fromhex(data).decode("utf-8", errors="replace")
 
 
 def lzma_encode(data: str) -> str:
@@ -969,7 +1082,12 @@ def arithmetic_encode(data: str) -> str:
         high_val = low_val + range_val * high[char]
         low_val = low_val + range_val * low[char]
     code = (low_val + high_val) / 2
-    model = {"probabilities": probabilities, "low": low, "high": high, "length": len(data)}
+    model = {
+        "probabilities": probabilities,
+        "low": low,
+        "high": high,
+        "length": len(data),
+    }
     return json.dumps({"code": code, "model": model})
 
 
@@ -996,7 +1114,7 @@ def arithmetic_decode(encoded: str) -> str:
 
 
 # def huffman_adaptive_encode(data: str) -> str:
-    # Utilisation de la méthode Huffman statique déjà définie
+# Utilisation de la méthode Huffman statique déjà définie
 #    return EncryptionManager().huffman_encode(data)
 
 
@@ -1029,11 +1147,11 @@ def xxencode_decode(data: str) -> str:
 
 
 def binhex_encode(data: str) -> str:
-    return data.encode('utf-8').hex()
+    return data.encode("utf-8").hex()
 
 
 def binhex_decode(data: str) -> str:
-    return bytes.fromhex(data).decode('utf-8', errors='replace')
+    return bytes.fromhex(data).decode("utf-8", errors="replace")
 
 
 def quoted_printable_encode(data: str) -> str:
@@ -1045,31 +1163,31 @@ def quoted_printable_decode(data: str) -> str:
 
 
 def utf7_encode(data: str) -> str:
-    return data.encode('utf-7').decode('utf-7')
+    return data.encode("utf-7").decode("utf-7")
 
 
 def utf7_decode(data: str) -> str:
-    return data.encode('utf-7').decode('utf-7')
+    return data.encode("utf-7").decode("utf-7")
 
 
 def utf16_encode(data: str) -> str:
-    return data.encode('utf-16').hex()
+    return data.encode("utf-16").hex()
 
 
 def utf16_decode(data: str) -> str:
-    return bytes.fromhex(data).decode('utf-16', errors='replace')
+    return bytes.fromhex(data).decode("utf-16", errors="replace")
 
 
 def utf32_encode(data: str) -> str:
-    return data.encode('utf-32').hex()
+    return data.encode("utf-32").hex()
 
 
 def utf32_decode(data: str) -> str:
-    return bytes.fromhex(data).decode('utf-32', errors='replace')
+    return bytes.fromhex(data).decode("utf-32", errors="replace")
 
 
 def escape_sequence_encode(data: str) -> str:
-    return data.encode('unicode_escape').decode('ascii')
+    return data.encode("unicode_escape").decode("ascii")
 
 
 def escape_sequence_decode(data: str) -> str:
@@ -1077,7 +1195,7 @@ def escape_sequence_decode(data: str) -> str:
 
 
 def mime_header_encode(data: str) -> str:
-    return str(Header(data, 'utf-8'))
+    return str(Header(data, "utf-8"))
 
 
 def mime_header_decode(data: str) -> str:
@@ -1088,8 +1206,8 @@ def mime_header_decode(data: str) -> str:
 # Encodages obscurs/historiques
 def base32hex_encode(data: str) -> str:
     alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUV"
-    b = data.encode('utf-8')
-    num = int.from_bytes(b, 'big')
+    b = data.encode("utf-8")
+    num = int.from_bytes(b, "big")
     result = ""
 
     while num:
@@ -1104,14 +1222,14 @@ def base32hex_decode(data: str) -> str:
 
     for char in data:
         num = num * 32 + alphabet.index(char)
-    b = num.to_bytes((num.bit_length() + 7) // 8, 'big')
-    return b.decode('utf-8', errors='replace')
+    b = num.to_bytes((num.bit_length() + 7) // 8, "big")
+    return b.decode("utf-8", errors="replace")
 
 
 def base36_encode(data: str) -> str:
     alphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
-    b = data.encode('utf-8')
-    num = int.from_bytes(b, 'big')
+    b = data.encode("utf-8")
+    num = int.from_bytes(b, "big")
     result = ""
 
     while num:
@@ -1122,8 +1240,8 @@ def base36_encode(data: str) -> str:
 
 def base36_decode(data: str) -> str:
     num = int(data, 36)
-    b = num.to_bytes((num.bit_length() + 7) // 8, 'big')
-    return b.decode('utf-8', errors='replace')
+    b = num.to_bytes((num.bit_length() + 7) // 8, "big")
+    return b.decode("utf-8", errors="replace")
 
 
 def base64url_encode(data: str) -> str:
@@ -1138,96 +1256,97 @@ def base64url_decode(data: str) -> str:
 
 
 def base92_encode(data: str) -> str:
-    b = data.encode('utf-8')
-    num = int.from_bytes(b, 'big')
-    alphabet = ''.join(chr(i) for i in range(33, 33+92))
+    b = data.encode("utf-8")
+    num = int.from_bytes(b, "big")
+    alphabet = "".join(chr(i) for i in range(33, 33 + 92))
     result = ""
 
     while num:
         num, rem = divmod(num, 92)
         result = alphabet[rem] + result
-    n_pad = len(b) - len(b.lstrip(b'\0'))
+    n_pad = len(b) - len(b.lstrip(b"\0"))
     return alphabet[0] * n_pad + result
 
 
 def base92_decode(data: str) -> str:
-    alphabet = ''.join(chr(i) for i in range(33, 33+92))
+    alphabet = "".join(chr(i) for i in range(33, 33 + 92))
     num = 0
 
     for c in data:
         num = num * 92 + alphabet.index(c)
-    b = num.to_bytes((num.bit_length() + 7) // 8, 'big')
+    b = num.to_bytes((num.bit_length() + 7) // 8, "big")
     n_pad = len(data) - len(data.lstrip(alphabet[0]))
-    return (b'\0' * n_pad + b).decode('utf-8', errors='replace')
+    return (b"\0" * n_pad + b).decode("utf-8", errors="replace")
 
 
 def a1z26_encode(data: str) -> str:
-    return ' '.join(str(ord(c.lower()) - 96) for c in data if c.isalpha())
+    return " ".join(str(ord(c.lower()) - 96) for c in data if c.isalpha())
 
 
 def a1z26_decode(data: str) -> str:
-    return ''.join(chr(int(num) + 96) for num in data.split() if num.isdigit())
+    return "".join(chr(int(num) + 96) for num in data.split() if num.isdigit())
 
 
 def tap_code_encode(data: str) -> str:
     data = data.upper().replace(" ", "")
     square = [
-        ['A', 'B', 'C', 'D', 'E'],
-        ['F', 'G', 'H', 'I', 'J'],
-        ['L', 'M', 'N', 'O', 'P'],
-        ['Q', 'R', 'S', 'T', 'U'],
-        ['V', 'W', 'X', 'Y', 'Z']
+        ["A", "B", "C", "D", "E"],
+        ["F", "G", "H", "I", "J"],
+        ["L", "M", "N", "O", "P"],
+        ["Q", "R", "S", "T", "U"],
+        ["V", "W", "X", "Y", "Z"],
     ]
-    mapping = {square[i][j]: (i+1, j+1) for i in range(5) for j in range(5)}
+    mapping = {square[i][j]: (i + 1, j + 1) for i in range(5) for j in range(5)}
     result = []
 
     for c in data:
 
-        if c == 'K':
-            c = 'C'
+        if c == "K":
+            c = "C"
 
         if c in mapping:
             result.append(f"{mapping[c][0]},{mapping[c][1]}")
-    return ' '.join(result)
+    return " ".join(result)
 
 
 def tap_code_decode(data: str) -> str:
     square = [
-        ['A', 'B', 'C', 'D', 'E'],
-        ['F', 'G', 'H', 'I', 'J'],
-        ['L', 'M', 'N', 'O', 'P'],
-        ['Q', 'R', 'S', 'T', 'U'],
-        ['V', 'W', 'X', 'Y', 'Z']
+        ["A", "B", "C", "D", "E"],
+        ["F", "G", "H", "I", "J"],
+        ["L", "M", "N", "O", "P"],
+        ["Q", "R", "S", "T", "U"],
+        ["V", "W", "X", "Y", "Z"],
     ]
     result = ""
 
     for pair in data.split():
-        i, j = map(int, pair.split(','))
-        result += square[i-1][j-1]
+        i, j = map(int, pair.split(","))
+        result += square[i - 1][j - 1]
     return result
 
 
 def pigpen_cipher_encode(data: str) -> str:
     # Une implémentation simple utilisant une substitution symbolique
     mapping = {c: f"[{c}]" for c in data}
-    return ''.join(mapping.get(c, c) for c in data)
+    return "".join(mapping.get(c, c) for c in data)
 
 
 def pigpen_cipher_decode(data: str) -> str:
     import re
-    return re.sub(r'\[([^\]]+)\]', r'\1', data)
+
+    return re.sub(r"\[([^\]]+)\]", r"\1", data)
 
 
 def braille_encode(data: str) -> str:
-    return ''.join(chr(0x2800 + (ord(c) % 256)) for c in data)
+    return "".join(chr(0x2800 + (ord(c) % 256)) for c in data)
 
 
 def braille_decode(data: str) -> str:
-    return ''.join(chr((ord(c) - 0x2800) % 256) for c in data)
+    return "".join(chr((ord(c) - 0x2800) % 256) for c in data)
 
 
 def semaphore_encode(data: str) -> str:
-    return ' '.join(f"<{c}>" for c in data)
+    return " ".join(f"<{c}>" for c in data)
 
 
 def semaphore_decode(data: str) -> str:
@@ -1235,32 +1354,31 @@ def semaphore_decode(data: str) -> str:
 
 
 def dna_encode(data: str) -> str:
-    mapping = {'0': 'A', '1': 'T', '2': 'C', '3': 'G'}
+    mapping = {"0": "A", "1": "T", "2": "C", "3": "G"}
     result = ""
 
     for c in data:
 
-        for digit in format(ord(c), '03d'):
+        for digit in format(ord(c), "03d"):
             result += mapping[digit]
     return result
 
 
 def dna_decode(data: str) -> str:
-    rev_mapping = {'A': '0', 'T': '1', 'C': '2', 'G': '3'}
+    rev_mapping = {"A": "0", "T": "1", "C": "2", "G": "3"}
     digits = "".join(rev_mapping[c] for c in data)
     result = ""
 
     for i in range(0, len(digits), 3):
-        result += chr(int(digits[i:i+3]))
+        result += chr(int(digits[i : i + 3]))
     return result
 
 
 # ----------------- Mise à jour des dictionnaires dans EncryptionManager -----------------
-class EncryptionManager():
-    
+class EncryptionManager:
 
     def __init__(self):
-        self.conf = ConfigManager()        
+        self.conf = ConfigManager()
         self.passgen = PasswordGenerator()
         self.session = SessionManager()
         self.report = ReportManager()
@@ -1273,37 +1391,41 @@ class EncryptionManager():
         self.password_history = []
         self.secure_directory = self.storage.load_secure_directory()
         self.derived_master_key = None
-        self.pwd_context = CryptContext(schemes=["bcrypt", "argon2", "pbkdf2_sha256"], deprecated="auto")
+        self.pwd_context = CryptContext(
+            schemes=["bcrypt", "argon2", "pbkdf2_sha256"], deprecated="auto"
+        )
         self.master_manager = MasterPasswordManager(self.conf.secure_directory)
         self.setup_logging()
 
     def setup_logging(self):
         logging.basicConfig(
-            filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "password_manager.log"),
+            filename=os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "password_manager.log"
+            ),
             level=logging.INFO,
-            format="%(asctime)s - %(levelname)s - %(message)s"
-            )
-        
+            format="%(asctime)s - %(levelname)s - %(message)s",
+        )
+
     def generic_encode(self, data: str, encoding: str) -> str:
 
         funcs = {
             "base64": lambda d: base64.b64encode(d.encode()).decode(),
             "hex": lambda d: binascii.hexlify(d.encode()).decode(),
             "utf-8": lambda d: d,
-            "ascii": lambda d: d.encode('ascii').decode('ascii'),
-            "url": lambda d: __import__('urllib.parse').quote(d),
+            "ascii": lambda d: d.encode("ascii").decode("ascii"),
+            "url": lambda d: __import__("urllib.parse").quote(d),
             "base32": lambda d: base64.b32encode(d.encode()).decode(),
             "base16": lambda d: base64.b16encode(d.encode()).decode(),
-            "rot13": lambda d: codecs.encode(d, 'rot_13'),
+            "rot13": lambda d: codecs.encode(d, "rot_13"),
             "base85": lambda d: base64.b85encode(d.encode()).decode(),
             "zlib": lambda d: binascii.hexlify(zlib.compress(d.encode())).decode(),
             "gzip": lambda d: binascii.hexlify(gzip.compress(d.encode())).decode(),
             "brotli": lambda d: brotli.compress(d.encode()).hex(),
-            "punycode": lambda d: d.encode('punycode').decode('ascii'),
+            "punycode": lambda d: d.encode("punycode").decode("ascii"),
             "z85": lambda d: base64.a85encode(d.encode()).decode(),
-            #"rle": self.rle_encode,
-            #"delta": self.delta_encode,
-            #"huffman": self.huffman_encode,
+            # "rle": self.rle_encode,
+            # "delta": self.delta_encode,
+            # "huffman": self.huffman_encode,
             "base91": base91_encode,
             "base122": base122_encode,
             "ascii85": ascii85_encode,
@@ -1311,9 +1433,9 @@ class EncryptionManager():
             "base58": base58_encode,
             "base62": base62_encode,
             "base65536": base65536_encode,
-#           "ebcdic": ebcdic_encode,
-#           "morse": morse_encode,
-#           "baudot": baudot_encode,
+            #           "ebcdic": ebcdic_encode,
+            #           "morse": morse_encode,
+            #           "baudot": baudot_encode,
             "rot5": rot5_encode,
             "rot18": rot18_encode,
             "rot47": rot47_encode,
@@ -1332,7 +1454,7 @@ class EncryptionManager():
             "lz4": lz4_encode,
             "zstandard": zstandard_encode,
             "arithmetic": arithmetic_encode,
-#           "huffman_adaptive": huffman_adaptive_encode,
+            #           "huffman_adaptive": huffman_adaptive_encode,
             "uuencode": uuencode_encode,
             "xxencode": xxencode_encode,
             "binhex": binhex_encode,
@@ -1351,21 +1473,22 @@ class EncryptionManager():
             "pigpen": pigpen_cipher_encode,
             "braille": braille_encode,
             "semaphore": semaphore_encode,
-            "dna": dna_encode
+            "dna": dna_encode,
         }
 
-        data = str(input('Entrez la chaine de caractères à encoder: '))
+        data = str(input("Entrez la chaine de caractères à encoder: "))
         dict_encodages = {}
 
         for i, name in zip(range(len(funcs)), funcs.keys()):
             dict_encodages[i] = name
 
-        print('Voici la liste des encodeurs disponibles: ')
+        print("Voici la liste des encodeurs disponibles: ")
 
         for i, name in zip(range(len(funcs)), funcs.keys()):
             print(f"/n{i} - {name}")
         choice = input(
-            "Choisissez un encodeur parmi les options suivantes (écrivez le nombre correspondant):")
+            "Choisissez un encodeur parmi les options suivantes (écrivez le nombre correspondant):"
+        )
         encoding = dict_encodages[choice]
 
         try:
@@ -1383,19 +1506,19 @@ class EncryptionManager():
             "hex": lambda d: binascii.unhexlify(d).decode(),
             "utf-8": lambda d: d,
             "ascii": lambda d: d,
-            "url": lambda d: __import__('urllib.parse').unquote(d),
+            "url": lambda d: __import__("urllib.parse").unquote(d),
             "base32": lambda d: base64.b32decode(d).decode(),
             "base16": lambda d: base64.b16decode(d).decode(),
-            "rot13": lambda d: codecs.decode(d, 'rot_13'),
+            "rot13": lambda d: codecs.decode(d, "rot_13"),
             "base85": lambda d: base64.b85decode(d).decode(),
             "zlib": lambda d: zlib.decompress(binascii.unhexlify(d)).decode(),
             "gzip": lambda d: gzip.decompress(binascii.unhexlify(d)).decode(),
             "brotli": lambda d: brotli.decompress(bytes.fromhex(d)).decode(),
-            "punycode": lambda d: d.encode('ascii').decode('punycode'),
+            "punycode": lambda d: d.encode("ascii").decode("punycode"),
             "z85": lambda d: base64.a85decode(d).decode(),
-#           "rle": self.rle_decode,
-#           "delta": self.delta_decode,
-#           "huffman": self.huffman_decode,
+            #           "rle": self.rle_decode,
+            #           "delta": self.delta_decode,
+            #           "huffman": self.huffman_decode,
             "base91": base91_decode,
             "base122": base122_decode,
             "ascii85": ascii85_decode,
@@ -1403,9 +1526,9 @@ class EncryptionManager():
             "base58": base58_decode,
             "base62": base62_decode,
             "base65536": base65536_decode,
-#           "ebcdic": ebcdic_decode,
-#           "morse": morse_decode,
-#           "baudot": baudot_decode,
+            #           "ebcdic": ebcdic_decode,
+            #           "morse": morse_decode,
+            #           "baudot": baudot_decode,
             "rot5": rot5_decode,
             "rot18": rot18_decode,
             "rot47": rot47_decode,
@@ -1424,7 +1547,7 @@ class EncryptionManager():
             "lz4": lz4_decode,
             "zstandard": zstandard_decode,
             "arithmetic": arithmetic_decode,
-#           "huffman_adaptive": huffman_adaptive_decode,
+            #           "huffman_adaptive": huffman_adaptive_decode,
             "uuencode": uuencode_decode,
             "xxencode": xxencode_decode,
             "binhex": binhex_decode,
@@ -1443,20 +1566,21 @@ class EncryptionManager():
             "pigpen": pigpen_cipher_decode,
             "braille": braille_decode,
             "semaphore": semaphore_decode,
-            "dna": dna_decode
+            "dna": dna_decode,
         }
-        data = str(input('Entrez la chaine de caractères à décoder: '))
+        data = str(input("Entrez la chaine de caractères à décoder: "))
         dict_decodings = {}
 
         for i, name in zip(range(len(funcs)), funcs.keys()):
             dict_decodings[i] = name
 
-        print('Voici la liste des décodeurs disponibles: ')
+        print("Voici la liste des décodeurs disponibles: ")
 
         for i, name in zip(range(len(funcs)), funcs.keys()):
             print(f"/n{i} - {name}")
         choice = input(
-            "Choisissez un décodeur parmi les options suivantes (écrivez le nombre correspondant):")
+            "Choisissez un décodeur parmi les options suivantes (écrivez le nombre correspondant):"
+        )
         decoding = dict_decodings[choice]
 
         try:
@@ -1467,8 +1591,6 @@ class EncryptionManager():
 
         except Exception as e:
             return f"Erreur lors du décodage : {e}"
-
-
 
     def hash_password(self, password):
         """
@@ -1482,7 +1604,6 @@ class EncryptionManager():
         """
         return self.pwd_context.hash(password)
 
-    
     def encode_with_hmac(self, data, key):
         """
         Encode une chaîne de caractères avec HMAC et une clé secrète.
@@ -1494,10 +1615,10 @@ class EncryptionManager():
         Returns:
         str: La chaîne encodée avec HMAC.
         """
-        encoded_hmac = hmac.new(key.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
+        encoded_hmac = hmac.new(
+            key.encode("utf-8"), data.encode("utf-8"), hashlib.sha256
+        ).hexdigest()
         return encoded_hmac
-
-
 
     def encrypt_password(self, password, key):
         """
@@ -1515,7 +1636,9 @@ class EncryptionManager():
         """
         try:
             cipher = AES.new(key, AES.MODE_GCM)
-            encrypted_password, tag = cipher.encrypt_and_digest(password.encode('utf-8'))
+            encrypted_password, tag = cipher.encrypt_and_digest(
+                password.encode("utf-8")
+            )
             return encrypted_password, cipher.nonce, tag
         except Exception as e:
             print(f"Erreur lors du chiffrement : {e}")
@@ -1530,8 +1653,13 @@ class EncryptionManager():
             master_password = self.master_manager.verify_master_password()
             if not master_password:
                 raise ValueError("Authentification échouée pour la dérivation de clé.")
-        return PBKDF2(master_password, salt, dkLen=key_length, count=100000, hmac_hash_module=SHA256)
-
+        return PBKDF2(
+            master_password,
+            salt,
+            dkLen=key_length,
+            count=100000,
+            hmac_hash_module=SHA256,
+        )
 
     def decrypt_password(self, encrypted_password, key, nonce, tag):
         """
@@ -1553,7 +1681,7 @@ class EncryptionManager():
         try:
             cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
             decrypted_password = cipher.decrypt_and_verify(encrypted_password, tag)
-            return decrypted_password.decode('utf-8')
+            return decrypted_password.decode("utf-8")
         except ValueError:
             print("Échec de l'authentification ou des données corrompues.")
             raise
