@@ -46,7 +46,7 @@ fi
 # shellcheck disable=SC1091
 . "$VENV_DIR/bin/activate"
 
-echo "[info] Python executable: $(which python)" 
+echo "[info] Python executable: $(which python)"
 python -V
 pip -V
 

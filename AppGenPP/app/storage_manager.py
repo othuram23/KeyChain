@@ -974,7 +974,7 @@ class StorageManager:
                 new_hash = self.enc.hash_password(new_password)
                 cur.execute(
                     """
-                    UPDATE passwords 
+                    UPDATE passwords
                     SET password_hash = ?, updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?
                 """,
