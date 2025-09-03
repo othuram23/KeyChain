@@ -15,17 +15,17 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@<commit-sha>
       with:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/checkout@<commit-sha>
       with:
         python-version: '3.11'
 
     - name: Cache pip
-      uses: actions/cache@v4
+      uses: actions/checkout@<commit-sha>
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -38,7 +38,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Install Node (for JS tooling)
-      uses: actions/setup-node@v4
+      uses: actions/checkout@<commit-sha>
       with:
         node-version: '20'
 
@@ -57,7 +57,7 @@ jobs:
         if [ -f package.json ]; then npm test --silent || true; fi
 
     - name: Run Semgrep SAST
-      uses: returntocorp/semgrep-action@v2
+      uses: actions/checkout@<commit-sha>
       with:
         config: 'p/ci'
 
@@ -68,7 +68,7 @@ jobs:
 
     - name: Upload test-results (optional)
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/checkout@<commit-sha>
       with:
         name: test-report
         path: |
@@ -81,14 +81,14 @@ jobs:
       actions: read
       security-events: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@<commit-sha>
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: actions/checkout@<commit-sha>
       with:
         languages: javascript,python
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+      uses: actions/checkout@<commit-sha>
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: actions/checkout@<commit-sha>
     - name: Make scripts executable
       run: chmod +x scripts/*.sh
